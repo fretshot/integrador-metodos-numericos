@@ -1,1 +1,3 @@
-# Numbi - Unity 3D Game
+# Proyecto Integrador Métodos Numéricos
+
+## Videojuego "Numbi"
