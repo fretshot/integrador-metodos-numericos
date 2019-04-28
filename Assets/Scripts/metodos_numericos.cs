@@ -11,9 +11,17 @@ public class metodos_numericos : MonoBehaviour{
     public TextMeshProUGUI textoNombreMetodo;
 
     public TMP_InputField FieldX,fieldX1, fieldX2, fieldX3, fieldX4, fieldY1, fieldY2, fieldY3, fieldY4, fieldGx,fieldGxCPU;
+    public TMP_InputField fieldXi,fieldXiCPU,fieldEcuacion;
 
-    public GameObject iconGood;
-    public GameObject iconBad;
+    public GameObject p1IconGood;
+    public GameObject p1IconBad;
+    public GameObject p2IconGood;
+    public GameObject p2IconBad;
+
+    public GameObject screenP1;
+    public GameObject screenP2;
+    public GameObject screenP3;
+    public GameObject screenP4;
 
     public Button btnValidar;
     public Button btnVerRespuesta;
@@ -23,7 +31,9 @@ public class metodos_numericos : MonoBehaviour{
     float x, x1, x2, x3, x4, y1, y2, y3, y4;
     float startingTime = 180f;
     float currentTime;
+
     float gx;
+    float xi;
 
     bool aplicaMetodo;
 
@@ -33,61 +43,173 @@ public class metodos_numericos : MonoBehaviour{
 
         btnNoAplicaElMetodo.onClick.AddListener(delegate {
 
-            btnVerRespuesta.interactable = false;
-            btnRendirse.interactable = false;
-            btnValidar.interactable = false;
-            btnNoAplicaElMetodo.interactable = false;
+            if (screenP1.activeSelf) {
 
-            if (aplicaMetodo == false) {
-                //Respuesta correcta
-                fieldGx.text = "No aplica el método";
-                iconGood.SetActive(true);
-                Invoke("ganar", 3);
-            } else {
-                //Respuesta incorrecta
-                fieldGx.text = "No aplica el método";
-                iconBad.SetActive(true);
-                Invoke("perder", 3);
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = false;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+
+                if (aplicaMetodo == false) {
+                    //Respuesta correcta
+                    fieldGx.text = "No aplica el método";
+                    p1IconGood.SetActive(true);
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    fieldGx.text = "No aplica el método";
+                    p1IconBad.SetActive(true);
+                    Invoke("perder", 3);
+                }
+
             }
+
+            if (screenP2.activeSelf) {
+
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = false;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+
+                if (aplicaMetodo == false) {
+                    //Respuesta correcta
+                    fieldXi.text = "No aplica el método";
+                    p2IconGood.SetActive(true);
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    fieldXi.text = "No aplica el método";
+                    p2IconBad.SetActive(true);
+                    Invoke("perder", 3);
+                }
+            }
+
+            if (screenP3.activeSelf) {
+
+            }
+
+            if (screenP4.activeSelf) {
+
+            }
+
+            
 
         });
 
         btnVerRespuesta.onClick.AddListener(delegate {
-            fieldGxCPU.gameObject.SetActive(true);
-            fieldGxCPU.text = gx.ToString("0.0000000");
-            btnVerRespuesta.interactable = false;
-            btnRendirse.interactable = true;
-            btnValidar.interactable = false;
-            btnNoAplicaElMetodo.interactable = false;
+
+            if (screenP1.activeSelf) {
+
+                fieldGxCPU.gameObject.SetActive(true);
+                fieldGxCPU.text = gx.ToString("0.0000000");
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = true;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+            }
+
+            if (screenP2.activeSelf) {
+
+                fieldXiCPU.gameObject.SetActive(true);
+                fieldXiCPU.text = xi.ToString("0.0000000");
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = true;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+            }
+
+            if (screenP3.activeSelf) {
+
+            }
+
+            if (screenP4.activeSelf) {
+
+            }
+            
         });
 
         btnRendirse.onClick.AddListener(delegate {
-            //do something
+
+            if (screenP1.activeSelf) {
+
+            }
+
+            if (screenP2.activeSelf) {
+
+            }
+
+            if (screenP3.activeSelf) {
+
+            }
+
+            if (screenP4.activeSelf) {
+
+            }
+            
         });
 
         btnValidar.onClick.AddListener(delegate {
-            if (fieldGx.text.Contains(gx.ToString())) {
-                //Respuesta correcta
-                iconGood.SetActive(true);
-                btnVerRespuesta.interactable = false;
-                btnRendirse.interactable = false;
-                btnValidar.interactable = false;
-                btnNoAplicaElMetodo.interactable = false;
-                Invoke("ganar", 3);
-            } else {
-                //Respuesta incorrecta
-                iconBad.SetActive(true);
-                btnVerRespuesta.interactable = false;
-                btnRendirse.interactable = false;
-                btnValidar.interactable = false;
-                btnNoAplicaElMetodo.interactable = false;
-                Invoke("perder", 3);
+
+            if (screenP1.activeSelf) {
+
+                if (fieldGx.text.Contains(gx.ToString())) {
+                    //Respuesta correcta
+                    p1IconGood.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    p1IconBad.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("perder", 3);
+                }
+
             }
+
+            if (screenP2.activeSelf) {
+
+                if (fieldXi.text.Contains(xi.ToString())) {
+                    //Respuesta correcta
+                    p2IconGood.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    p2IconBad.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("perder", 3);
+                }
+            }
+
+            if (screenP3.activeSelf) {
+
+            }
+
+            if (screenP4.activeSelf) {
+
+            }
+            
         });
 
-        iconGood.SetActive(false);
-        iconBad.SetActive(false);
+        p1IconGood.SetActive(false);
+        p1IconBad.SetActive(false);
         fieldGxCPU.gameObject.SetActive(false);
+
+        p2IconGood.SetActive(false);
+        p2IconBad.SetActive(false);
+        fieldXiCPU.gameObject.SetActive(false);
 
         btnVerRespuesta.interactable = true;
         btnRendirse.interactable = true;
@@ -95,26 +217,74 @@ public class metodos_numericos : MonoBehaviour{
         btnNoAplicaElMetodo.interactable = true;
 
         fieldGx.text = "";
+        fieldXi.text = "";
 
         currentTime = startingTime;
 
         inicializarDatos();
 
-        opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
+        //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
+
+        opcion = 5;
 
         switch (opcion) {
             case 1:
+                screenP1.SetActive(true);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
                 newtonHaciaAdelante();
                 break;
             case 2:
+                screenP1.SetActive(true);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
                 newtonHaciaAtras();
                 break;
             case 3:
+                screenP1.SetActive(true);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
                 newtonDiferenciasDivididas();
                 break;
             case 4:
                 laGrange();
+                screenP1.SetActive(true);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
                 break;
+            case 5:
+                screenP1.SetActive(false);
+                screenP2.SetActive(true);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                puntoFijo();
+                break;
+            case 6:
+                screenP1.SetActive(false);
+                screenP2.SetActive(true);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                newtonRaphson();
+                break;
+            case 7:
+                screenP1.SetActive(false);
+                screenP2.SetActive(true);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                falsaPosicion();
+                break;
+            case 8:
+                screenP1.SetActive(false);
+                screenP2.SetActive(true);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                secante();
+                break;
+            
         }
     }
 
@@ -316,6 +486,55 @@ public class metodos_numericos : MonoBehaviour{
         gx = a + b + c + d;
 
         Debug.Log("Lagrange: g(x) = "+gx);
+    }
+
+    //PUNTO FIJO
+    private void puntoFijo() {
+
+        textoNombreMetodo.text = "Punto fijo";
+        aplicaMetodo = true;
+
+        float tmp = 0;
+        float e = 0;
+
+        while (true) {
+
+            xi = (2 * (float)Math.Pow(tmp, 2) - 2) / 6;
+
+            fieldEcuacion.text = "x = ( "+2+"x^2 - "+2+" ) / "+6+"";
+
+            e = Math.Abs(xi - tmp);
+
+            tmp = xi;
+
+
+            if (e.ToString("0.0000000").StartsWith("0.00000")) {
+                Debug.Log("xi: " + xi.ToString("0.0000000"));
+                break;
+            }
+        }
+
+    }
+
+
+    //NEWTON RAPHSON
+    private void newtonRaphson() {
+
+        textoNombreMetodo.text = "Newton - Raphson";
+        aplicaMetodo = true;
+    }
+
+    //FALSA POSICION
+    private void falsaPosicion() {
+        textoNombreMetodo.text = "Falsa posición";
+        aplicaMetodo = true;
+
+    }
+
+    // SECANTE
+    private void secante() {
+        textoNombreMetodo.text = "Secante";
+        aplicaMetodo = true;
     }
 
 }
