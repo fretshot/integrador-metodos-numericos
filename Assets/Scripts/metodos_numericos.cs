@@ -25,7 +25,7 @@ public class metodos_numericos : MonoBehaviour{
     float currentTime;
     float gx;
 
-    bool aplicaMetodo = false;
+    bool aplicaMetodo;
 
     int opcion;
 
@@ -141,18 +141,17 @@ public class metodos_numericos : MonoBehaviour{
 
     private void inicializarDatos() {
 
-        //x = UnityEngine.Random.Range(1, 7);
-        x = 3.25f;
+        x = UnityEngine.Random.Range(1.0f, 3.0f);
 
-        x1 = UnityEngine.Random.Range(1, 7);
-        x2 = UnityEngine.Random.Range(1, 7);
-        x3 = UnityEngine.Random.Range(1, 7);
-        x4 = UnityEngine.Random.Range(1, 7);
+        x1 = UnityEngine.Random.Range(1.0f, 1.5f);
+        x2 = UnityEngine.Random.Range(1.5f, 2.0f);
+        x3 = UnityEngine.Random.Range(2.0f, 2.5f);
+        x4 = UnityEngine.Random.Range(2.5f, 3.0f);
 
-        y1 = UnityEngine.Random.Range(1, 7);
-        y2 = UnityEngine.Random.Range(1, 7);
-        y3 = UnityEngine.Random.Range(1, 7);
-        y4 = UnityEngine.Random.Range(1, 7);
+        y1 = UnityEngine.Random.Range(1.0f, 2.5f);
+        y2 = UnityEngine.Random.Range(2.5f, 3.0f);
+        y3 = UnityEngine.Random.Range(3.0f, 3.5f);
+        y4 = UnityEngine.Random.Range(3.5f, 4.0f);
 
         FieldX.text = x.ToString("0.00");
 
@@ -187,12 +186,14 @@ public class metodos_numericos : MonoBehaviour{
 
     // =========================== Métodos numericos ========================= //
 
+
+    // NEWTON HACIA ADELANTE
     private void newtonHaciaAdelante() {
 
         textoNombreMetodo.text = "Newton hacia adelante";
 
-        float[] xi = {2.0f, 2.5f, 3.0f,3.5f};
-        float[] yi = {3.03f, 3.48f, 4.08f, 4.87f};
+        float[] xi = {x1, x2, x3, x4};
+        float[] yi = {y1, y2, y3, y4};
 
         float h1 = Math.Abs(xi[0] - xi[1]);
         float h2 = Math.Abs(xi[2] - xi[1]);
@@ -225,23 +226,25 @@ public class metodos_numericos : MonoBehaviour{
 
         gx = (yi[0] * s0) + (d1_1 * s1) + (d2_1 * s2) + (d3_1 * s3);
 
-        Debug.Log("\n\tg(x) = "+gx);
+        Debug.Log("Newton hacia adelante: g(x) = "+gx);
 
     }
 
+    // NEWTON HACIA ATRAS
     private void newtonHaciaAtras() {
 
         textoNombreMetodo.text = "Newton hacia atrás";
 
-        float[] xi = { 2.0f, 2.5f, 3.0f, 3.5f };
-        float[] yi = { 3.03f, 3.48f, 4.08f, 4.87f };
+        float[] xi = { x1, x2, x3, x4 };
+        float[] yi = { y1, y2, y3, y4 };
 
         float h1 = Math.Abs(xi[0] - xi[1]);
         float h2 = Math.Abs(xi[2] - xi[1]);
         float h3 = Math.Abs(xi[3] - xi[2]);
 
+
         if (h1 == h2 && h1 == h3 && h2 == h3) {
-            aplicaMetodo = true;
+            aplicaMetodo = true; 
         } else {
             aplicaMetodo = false;
         }
@@ -267,7 +270,7 @@ public class metodos_numericos : MonoBehaviour{
 
         gx = yi[3] * s0 + (d1_3 * s1) + (d2_2 * s2) + (d3_1 * s3);
 
-        Debug.Log("\n\tg(x) = " + gx);
+        Debug.Log("Newton hacia atrás: g(x) = " + gx);
 
     }
 
@@ -282,6 +285,18 @@ public class metodos_numericos : MonoBehaviour{
         textoNombreMetodo.text = "LaGrange";
 
         aplicaMetodo = true;
+
+        float[] xi = { x1, x2, x3, x4 };
+        float[] yi = { y1, y2, y3, y4 };
+
+        float a = (yi[0] * (x - xi[1]) * (x - xi[2]) * (x - xi[3])) / ((xi[0] - xi[1]) * (xi[0] - xi[2]) * (xi[0] - xi[3]));
+        float b = (yi[1] * (x - xi[0]) * (x - xi[2]) * (x - xi[3])) / ((xi[1] - xi[0]) * (xi[1] - xi[2]) * (xi[1] - xi[3]));
+        float c = (yi[2] * (x - xi[0]) * (x - xi[1]) * (x - xi[3])) / ((xi[2] - xi[0]) * (xi[2] - xi[1]) * (xi[2] - xi[3]));
+        float d = (yi[3] * (x - xi[0]) * (x - xi[1]) * (x - xi[2])) / ((xi[3] - xi[0]) * (xi[3] - xi[1]) * (xi[3] - xi[2]));
+
+        gx = a + b + c + d;
+
+        Debug.Log("Lagrange: g(x) = "+gx);
 
     }
 
