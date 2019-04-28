@@ -225,7 +225,7 @@ public class metodos_numericos : MonoBehaviour{
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 5;
+        opcion = 8;
 
         switch (opcion) {
             case 1:
@@ -522,12 +522,65 @@ public class metodos_numericos : MonoBehaviour{
 
         textoNombreMetodo.text = "Newton - Raphson";
         aplicaMetodo = true;
+
+        float xi = 0;
+        float tmp = 1;
+        float e = 0;
+
+        while (true) {
+
+            xi = tmp - ((float)(Math.Exp(3 * tmp)) - 4) / (3 * (float)Math.Exp(3 * tmp)); // e^3x - 4
+
+            fieldEcuacion.text = "f(x) = e^3x -4";
+
+            e = Math.Abs(xi - tmp);
+
+            
+
+            tmp = xi;
+
+            if (e.ToString("0.0000000").StartsWith("0.00000")) {
+                Debug.Log("xi: " + xi.ToString("0.0000000"));
+                break;
+            }
+        }
     }
 
     //FALSA POSICION
     private void falsaPosicion() {
+
         textoNombreMetodo.text = "Falsa posición";
         aplicaMetodo = true;
+
+        float tmp = 0;
+        float e = 0;
+
+        float a = 0;
+        float b = 1;
+
+        float fb = 16;
+        float fa = -3;
+
+        while (true) {
+
+            a = xi;
+
+            //fa= 2*(math.pow(a,2))- (6*a) -2 # Para 2x^2 - 6x - 2
+
+            fa = (float)(Math.Exp(3 * a)) - 4; // Para e^3x - 4
+            xi = a - ((fa * (b - a)) / (fb - fa));
+
+            fieldEcuacion.text = "f(x) = e^3x - 4";
+
+            e = Math.Abs(xi - tmp);
+
+            tmp = xi;
+
+            if (e.ToString("0.0000000").StartsWith("0.000")) {
+                Debug.Log("xi: " + xi.ToString("0.0000000"));
+                break;
+            }
+        }
 
     }
 
@@ -535,6 +588,33 @@ public class metodos_numericos : MonoBehaviour{
     private void secante() {
         textoNombreMetodo.text = "Secante";
         aplicaMetodo = true;
+
+        fieldEcuacion.text = "f(x) = e^3x - 4";
+
+        float temp1 = 0;
+        float ftemp1 = (float)(Math.Exp(3 * temp1)) - 4;
+
+        float temp2 = 1;
+        float ftemp2 = (float)(Math.Exp(3 * temp2)) - 4;
+
+        float fxi;
+
+        float e;
+
+        while (true) {
+            xi = temp2 - ((ftemp2 * (temp2 - temp1)) / (ftemp2 - ftemp1));
+            fxi = (float)(Math.Exp(3 * xi)) - 4;
+            e = Math.Abs(xi - temp2);
+            temp1 = temp2;
+            ftemp1 = ftemp2;
+            temp2 = xi;
+            ftemp2 = fxi;
+
+            if (e.ToString("0.0000000").StartsWith("0.000")) {
+                Debug.Log("xi: " + xi.ToString("0.0000000"));
+                break;
+            }
+        }
     }
 
 }
