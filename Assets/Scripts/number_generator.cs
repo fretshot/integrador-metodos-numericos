@@ -10,6 +10,7 @@ public class number_generator : MonoBehaviour {
     public float tiempoMax = 6f;
 
     private void Start() {
+        NotificationCenter.DefaultCenter().AddObserver(this, "startGenerator");
         Invoke("Generar", Random.Range(tiempoMin, tiempoMax));
         NotificationCenter.DefaultCenter().AddObserver(this, "stopGenerator");
     }
@@ -23,5 +24,9 @@ public class number_generator : MonoBehaviour {
 
     void stopGenerator(Notification notification) {
         CancelInvoke();
+    }
+
+    void startGenerator(Notification notification) {
+        Invoke("Generar", Random.Range(tiempoMin, tiempoMax));
     }
 }

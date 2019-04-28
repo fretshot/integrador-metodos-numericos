@@ -13,7 +13,7 @@ public class number_movement : MonoBehaviour{
 
     void Update(){
         transform.Translate(Vector2.down * speed * Time.deltaTime);
-        //Debug.Log(speed);
+        //Debug.Log(speed.ToString("0.00"));
     }
 
     void increaseSpeed(Notification notification) {

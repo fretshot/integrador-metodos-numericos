@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class collider : MonoBehaviour{
 
-    public Camera failCamera;
-    public Camera mainCamera;
-
     void OnTriggerEnter2D(Collider2D other){
         Destroy(other.gameObject);
-        NotificationCenter.DefaultCenter().PostNotification(this, "playerLost");
+        //NotificationCenter.DefaultCenter().PostNotification(this, "playerLost");
+        NotificationCenter.DefaultCenter().PostNotification(this, "activarProblema");
     }
 
 }

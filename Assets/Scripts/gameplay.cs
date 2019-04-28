@@ -8,12 +8,12 @@ using UnityEngine.UI;
 
 public class gameplay : MonoBehaviour {
 
-    public GameObject[] uiLives;
-
+   
     private List<int> numeros;
 
     private int score = 0;
     private int maxScore = 0;
+    float time;
 
     public TextMeshProUGUI txt_score;
     public TextMeshProUGUI txt_yourScore;
@@ -26,19 +26,19 @@ public class gameplay : MonoBehaviour {
     public AudioSource lostLiveSound;
     public AudioSource newRecordSound;
 
-    float time;
-    private int lives;
     private bool playerIsDead = false;
 
     public GameObject failCamera;
     public Camera mainCamera;
     public GameObject lostLiveCamera;
     public GameObject pauseCamera;
+    public GameObject screen_game;
+    public GameObject screen_problema;
 
     void Start(){
 
         playerIsDead = false;
-        lives = 3;
+
         sourceMusic = GetComponent<AudioSource>();
 
         if (PlayerPrefs.HasKey("MusicVolume")) {
@@ -58,6 +58,10 @@ public class gameplay : MonoBehaviour {
         NotificationCenter.DefaultCenter().AddObserver(this, "playerLost");
         NotificationCenter.DefaultCenter().AddObserver(this, "resumeGameplay");
         NotificationCenter.DefaultCenter().AddObserver(this, "pauseGameplay");
+        NotificationCenter.DefaultCenter().AddObserver(this, "borrarPantalla");
+        NotificationCenter.DefaultCenter().AddObserver(this, "activarProblema");
+        NotificationCenter.DefaultCenter().AddObserver(this, "respuestaCorrecta");
+        NotificationCenter.DefaultCenter().AddObserver(this, "respuestaInorrecta");
 
         if (PlayerPrefs.HasKey("Maxscore")) {
             maxScore = PlayerPrefs.GetInt("Maxscore");
@@ -76,7 +80,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -88,7 +93,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -100,7 +106,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -112,7 +119,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -124,7 +132,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -136,7 +145,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -148,7 +158,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -160,7 +171,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -172,7 +184,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -184,7 +197,8 @@ public class gameplay : MonoBehaviour {
                 txt_score.text = score.ToString();
                 getPointsSound.Play();
             } else {
-                playerLost();
+                //playerLost();
+                activarProblema();
             }
         }
 
@@ -193,6 +207,7 @@ public class gameplay : MonoBehaviour {
                 SceneManager.LoadScene("01");
             }
         }
+        
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
             if (playerIsDead == true) {
@@ -220,61 +235,61 @@ public class gameplay : MonoBehaviour {
         }
     }
 
+
+
     void agregar(Notification notification) {
         numeros.Add((int)notification.data);
     }
 
+    
 
-    public void DeleteAll() {
-        foreach (GameObject o in FindObjectsOfType<GameObject>()) {
-            Destroy(o);
+    public void borrarPantalla(Notification notification) {
+
+        string[] tags = {
+            "num0","num1","num2","num3","num4","num5","num6","num7","num8","num9"
+        };
+
+        foreach (string tag in tags) {
+            GameObject[] numeros = GameObject.FindGameObjectsWithTag(tag);
+
+            foreach (GameObject numero in numeros) {
+                Destroy(numero);
+            }
         }
     }
 
+    public void activarProblema() {
+        NotificationCenter.DefaultCenter().PostNotification(this, "borrarPantalla");
+        NotificationCenter.DefaultCenter().PostNotification(this, "stopGenerator");
+        screen_game.SetActive(false);
+        screen_problema.SetActive(true);
+        lostLiveSound.Play();
+        lostLiveCamera.SetActive(true);
+        Invoke("disableLostLiveCamera", 0.5f);
+    }
+
     public void playerLost() {
-
-        lives = lives - 1;
+        screen_problema.SetActive(false);
         playerIsDead = true;
-
-        switch (lives) {
-            case 0:
-                failCamera.SetActive(true);
-                mainCamera.enabled = false;
-                if (score > maxScore) {
-                    PlayerPrefs.SetInt("Maxscore", score); // Guardamos la puntuacion maxima
-                    txt_newRecord.enabled = true;
-                    Invoke("activateSoundMaxScore", 2f);
-                } else {
-                    txt_newRecord.enabled = false;
-                }
-                NotificationCenter.DefaultCenter().PostNotification(this, "stopGenerator");
-                //Debug.Log("Puntuación: " + score + " --- Record: " + maxScore);
-                txt_maxScore.text = "Max Score: " + maxScore.ToString();
-                txt_yourScore.text = "Your Score: " + score.ToString();
-                number_movement.speed = 5f;
-                sourceMusic.volume = 0.0f;
-                lostSound.Play();
-                lostLiveSound.Play();
-                lostLiveCamera.SetActive(true);
-                Invoke("disableLostLiveCamera", 0.5f);
-                break;
-
-            case 1:
-                uiLives[1].SetActive(false);
-                lostLiveSound.Play();
-                lostLiveCamera.SetActive(true);
-                Invoke("disableLostLiveCamera", 0.5f);
-                playerIsDead = false;
-                break;
-
-            case 2:
-                uiLives[2].SetActive(false);
-                lostLiveSound.Play();
-                lostLiveCamera.SetActive(true);
-                Invoke("disableLostLiveCamera", 0.25f);
-                playerIsDead = false;
-                break;
+        failCamera.SetActive(true);
+        mainCamera.enabled = false;
+        NotificationCenter.DefaultCenter().PostNotification(this, "borrarPantalla");
+        if (score > maxScore) {
+            PlayerPrefs.SetInt("Maxscore", score); // Guardamos la puntuacion maxima
+            txt_newRecord.enabled = true;
+            Invoke("activateSoundMaxScore", 2f);
+        } else {
+            txt_newRecord.enabled = false;
         }
+        NotificationCenter.DefaultCenter().PostNotification(this, "stopGenerator");
+
+        txt_maxScore.text = "Puntuación Máxima: " + maxScore.ToString();
+        txt_yourScore.text = "Puntuación Actual: " + score.ToString();
+        number_movement.speed = 5f;
+        sourceMusic.volume = 0.0f;
+        lostLiveSound.Play();
+        lostLiveCamera.SetActive(true);
+        Invoke("disableLostLiveCamera", 0.5f);        
     }
 
     public void disableLostLiveCamera() {
@@ -294,10 +309,22 @@ public class gameplay : MonoBehaviour {
     void pauseGameplay(Notification notification) {
         pauseCamera.SetActive(true);
         Time.timeScale = 0;
-        if (PlayerPrefs.GetFloat("MusicVolume") < 0.1f) {
-            sourceMusic.volume = 0.05f;
-        } else {
-            sourceMusic.volume = 0f;
-        }
+        sourceMusic.volume = 0f; 
     }
+
+    public void continuarJugando(){
+        //Validar primero si la respuesta es correcta
+        screen_game.SetActive(true);
+        screen_problema.SetActive(false);
+        NotificationCenter.DefaultCenter().PostNotification(this, "startGenerator");
+    }
+
+    void respuestaCorrecta(Notification notification) {
+        continuarJugando();
+    }
+
+    void respuestaInorrecta(Notification notification) {
+        playerLost();
+    }
+
 }
