@@ -288,7 +288,7 @@ public class metodos_numericos : MonoBehaviour{
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 13;
+        opcion = 12;
 
         switch (opcion) {
             case 1:
@@ -802,9 +802,39 @@ public class metodos_numericos : MonoBehaviour{
         aplicaMetodo = true;
     }
 
+    // GAUSS - SEIDEL
     private void gaussSeidel() {
+
         textoNombreMetodo.text = "Gauss - Seidel";
         aplicaMetodo = true;
+
+        float x = 0;
+        float y = 0;
+        float z = 0;
+
+        while (true) {
+
+            float xi = (7.85f + (0.1f * y) + (0.2f * z)) / 3f;
+            float yi = (-19.3f - (0.1f * x) + (0.3f * z)) / 7f;
+            float zi = (71.4f - (0.3f * x) + (0.2f * y)) / 10f;
+
+            float ex = Math.Abs(xi - x);
+            float ey = Math.Abs(yi - y);
+            float ez = Math.Abs(zi - z);
+
+            x = xi;
+            y = yi;
+            z = zi;
+
+            if (ey.ToString("0.0000000").StartsWith("0.000")) {
+                rx = x;
+                ry = y;
+                rz = z;
+                Debug.Log("\txi: " + rx.ToString("0.0000000") + "\tyi: " + ry.ToString("0.0000000") + "\tzi: " + rz.ToString("0.0000000"));
+                break;
+            }
+        }
+            
     }
 
     // JACOBI
