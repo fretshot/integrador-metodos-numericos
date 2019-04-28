@@ -271,16 +271,35 @@ public class metodos_numericos : MonoBehaviour{
         gx = yi[3] * s0 + (d1_3 * s1) + (d2_2 * s2) + (d3_1 * s3);
 
         Debug.Log("Newton hacia atrás: g(x) = " + gx);
-
     }
 
+    // NEWTON DIFERENCIAS DIVIDIDAS
     private void newtonDiferenciasDivididas() {
         textoNombreMetodo.text = "Newton diferencias divididas";
 
         aplicaMetodo = true;
-        
+
+        float[] xi = { x1, x2, x3, x4 };
+        float[] yi = { y1, y2, y3, y4 };
+
+        //Primera diferencia D'f(xi)
+        float d1_1 = (yi[1] - yi[0]) / (xi[1] - xi[0]);
+        float d1_2 = (yi[2] - yi[1]) / (xi[2] - xi[1]);
+        float d1_3 = (yi[3] - yi[2]) / (xi[3] - xi[2]);
+
+        //Segunda diferencia D''f(xi)
+        float d2_1 = (d1_2 - d1_1) / (xi[2] - xi[0]);
+        float d2_2 = (d1_3 - d1_2) / (xi[3] - xi[1]);
+
+        //Tercera diferencia D'''f(xi)
+        float d3_1 = (d2_2 - d2_1) / (xi[3] - xi[0]);
+
+        gx = yi[0] + (d1_1 * (x - xi[0])) + (d2_1 * (x - xi[0]) * (x - xi[1])) + (d3_1 * (x - xi[0]) * (x - xi[1]) * (x - xi[2]));
+
+        Debug.Log("Newton hacia atrás: g(x) = " + gx);
     }
 
+    // LAGRANGE
     private void laGrange() {
         textoNombreMetodo.text = "LaGrange";
 
@@ -297,7 +316,6 @@ public class metodos_numericos : MonoBehaviour{
         gx = a + b + c + d;
 
         Debug.Log("Lagrange: g(x) = "+gx);
-
     }
 
 }
