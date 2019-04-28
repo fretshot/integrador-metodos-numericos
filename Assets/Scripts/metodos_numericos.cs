@@ -14,12 +14,18 @@ public class metodos_numericos : MonoBehaviour{
     public TMP_InputField fieldXi,fieldXiCPU,fieldEcuacion;
     public TMP_InputField fieldX,fieldY,fieldZ,fieldXCPU,fieldYCPU,fieldZCPU;
 
+    public TMP_InputField FieldEcuacion, fieldXi1, fieldXi2, fieldXi3, fieldXi4, fieldYi1, fieldYi2, fieldYi3, fieldYi4;
+    public TMP_InputField fieldGx1, fieldGx2, fieldGx3, fieldGx4;
+    public TMP_InputField fieldGx1CPU, fieldGx2CPU, fieldGx3CPU, fieldGx4CPU;
+
     public GameObject p1IconGood;
     public GameObject p1IconBad;
     public GameObject p2IconGood;
     public GameObject p2IconBad;
     public GameObject p3IconGood;
     public GameObject p3IconBad;
+    public GameObject p4IconGood;
+    public GameObject p4IconBad;
 
     public GameObject screenP1;
     public GameObject screenP2;
@@ -36,6 +42,9 @@ public class metodos_numericos : MonoBehaviour{
     float currentTime;
 
     float gx;
+
+    float gx1, gx2, gx3, gx4;
+
     float xi;
 
     float rx;
@@ -118,6 +127,29 @@ public class metodos_numericos : MonoBehaviour{
 
             if (screenP4.activeSelf) {
 
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = false;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+
+                if (aplicaMetodo == false) {
+                    //Respuesta correcta
+                    fieldGx1.text = "No aplica el método";
+                    fieldGx2.text = "No aplica el método";
+                    fieldGx3.text = "No aplica el método";
+                    fieldGx4.text = "No aplica el método";
+                    p4IconGood.SetActive(true);
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    fieldGx1.text = "No aplica el método";
+                    fieldGx2.text = "No aplica el método";
+                    fieldGx3.text = "No aplica el método";
+                    fieldGx4.text = "No aplica el método";
+                    p4IconBad.SetActive(true);
+                    Invoke("perder", 3);
+                }
+
             }
 
             
@@ -161,6 +193,18 @@ public class metodos_numericos : MonoBehaviour{
 
             if (screenP4.activeSelf) {
 
+                fieldGx1CPU.gameObject.SetActive(true);
+                fieldGx2CPU.gameObject.SetActive(true);
+                fieldGx3CPU.gameObject.SetActive(true);
+                fieldGx4CPU.gameObject.SetActive(true);
+                fieldGx1CPU.text = gx1.ToString("0.0000000");
+                fieldGx2CPU.text = gx2.ToString("0.0000000");
+                fieldGx3CPU.text = gx3.ToString("0.0000000");
+                fieldGx4CPU.text = gx4.ToString("0.0000000");
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = true;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
             }
             
         });
@@ -253,6 +297,24 @@ public class metodos_numericos : MonoBehaviour{
 
             if (screenP4.activeSelf) {
 
+                if (fieldGx1.text.Contains(gx1.ToString()) && fieldGx2.text.Contains(gx2.ToString()) && fieldGx3.text.Contains(gx3.ToString()) && fieldGx4.text.Contains(gx4.ToString())) {
+                    //Respuesta correcta
+                    p4IconGood.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    p4IconBad.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("perder", 3);
+                }
+
             }
             
         });
@@ -267,6 +329,9 @@ public class metodos_numericos : MonoBehaviour{
 
         p3IconGood.SetActive(false);
         p3IconBad.SetActive(false);
+
+        p4IconGood.SetActive(false);
+        p4IconBad.SetActive(false);
         fieldXCPU.gameObject.SetActive(false);
         fieldYCPU.gameObject.SetActive(false);
         fieldZCPU.gameObject.SetActive(false);
@@ -275,6 +340,16 @@ public class metodos_numericos : MonoBehaviour{
         btnRendirse.interactable = true;
         btnValidar.interactable = true;
         btnNoAplicaElMetodo.interactable = true;
+
+        fieldGx1CPU.gameObject.SetActive(false);
+        fieldGx2CPU.gameObject.SetActive(false);
+        fieldGx3CPU.gameObject.SetActive(false);
+        fieldGx4CPU.gameObject.SetActive(false);
+
+        fieldGx1.text = "";
+        fieldGx2.text = "";
+        fieldGx3.text = "";
+        fieldGx4.text = "";
 
         fieldGx.text = "";
         fieldXi.text = "";
@@ -288,7 +363,7 @@ public class metodos_numericos : MonoBehaviour{
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 12;
+        opcion = 14;
 
         switch (opcion) {
             case 1:
@@ -384,9 +459,9 @@ public class metodos_numericos : MonoBehaviour{
                 break;
             case 14:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
-                screenP4.SetActive(false);
+                screenP4.SetActive(true);
                 lineaRecta();
                 break;
             case 15:
@@ -504,6 +579,15 @@ public class metodos_numericos : MonoBehaviour{
         fieldY2.text = y2.ToString("0.00");
         fieldY3.text = y3.ToString("0.00");
         fieldY4.text = y4.ToString("0.00");
+
+        fieldXi1.text = x1.ToString("0.00");
+        fieldXi2.text = x2.ToString("0.00");
+        fieldXi3.text = x3.ToString("0.00");
+        fieldXi4.text = x4.ToString("0.00");
+        fieldYi1.text = y1.ToString("0.00");
+        fieldYi2.text = y2.ToString("0.00");
+        fieldYi3.text = y3.ToString("0.00");
+        fieldYi4.text = y4.ToString("0.00");
     }
 
     float factorial(float n) {
@@ -876,6 +960,38 @@ public class metodos_numericos : MonoBehaviour{
     private void lineaRecta() {
         textoNombreMetodo.text = "Linea recta";
         aplicaMetodo = true;
+
+        float x1 = 1.1f, x2 = 1.9f, x3 = 2.4f, x4 = 4.8f, x5 = 5.1f, x6 = 10.5f;
+        float y1 = 2.5f, y2 = 2.7f, y3 = 3.7f, y4 = 5.2f, y5 = 6.0f, y6 = 8.3f;
+
+        float n = 6.0f;
+
+        float x = x1 + x2 + x3 + x4 + x5 + x6; //25.799999999999997
+        float y = y1 + y2 + y3 + y4 + y5 + y6; //28.400000000000002
+        float cx = (x1 * x1) + (x2 * x2) + (x3 * x3) + (x4 * x4) + (x5 * x5) + (x6 * x6);//169.88
+        float xy = (x1 * y1) + (x2 * y2) + (x3 * y3) + (x4 * y4) + (x5 * y5) + (x6 * y6);//159.47
+
+        float ecuac1 = (n * -4.3f) + x; //(6*-4.3)+25.799999999999997=0
+        float ecuac2 = (x * -4.3f) + cx; //(25.799999999999997*-4.3)+169.88=58.94
+        float ecuac3 = (y * -4.3f) + xy; //(28.4*-4.3)+159.47=37.35
+
+        float a1 = ecuac3 / ecuac2; //a1= 37.35/58.94 = 0.6336952833389886
+        Debug.Log("a1: " + a1);
+
+        float a0;
+        a0 = (y - x * a1) / n; //a0=2.008443614975683
+
+        Debug.Log("a0: " + a0);
+
+        gx1 = a0 + a1 * x1;
+        gx2 = a0 + a1 * x2;
+        gx3 = a0 + a1 * x3;
+        gx4 = a0 + a1 * x4;
+
+        Debug.Log("gx1: " + gx1);
+        Debug.Log("gx2: " + gx2);
+        Debug.Log("gx3: " + gx3);
+        Debug.Log("gx4: " + gx4);
     }
 
     private void cuadratica() {
