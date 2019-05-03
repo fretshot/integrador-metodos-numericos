@@ -436,7 +436,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 22;
+        opcion = 19;
 
         switch (opcion) {
             case 1:
@@ -1110,6 +1110,8 @@ public class metodos_numericos : MonoBehaviour {
         aplicaMetodo = true;
     }
 
+
+    // REGLA TRAPEZOIDAL
     private void reglaTrapezoidal() {
         textoNombreMetodo.text = "Regla trapezoidal";
         aplicaMetodo = true;
@@ -1153,9 +1155,40 @@ public class metodos_numericos : MonoBehaviour {
 
     }
 
+    // NEWTON COTES ABIERTAS
     private void newtonCotesAbiertas() {
         textoNombreMetodo.text = "Newton - Cotes (Abiertas)";
         aplicaMetodo = true;
+
+        float a = -2, b = 2, n = 4;
+        float h = (b - a) / (n + 2);
+        float A = 0.3f; //6 / 20;Constante de Cotes abiertas cuando n=4
+
+        fieldLimites.text = "de " + a.ToString() + " a " + b.ToString();
+        fieldN.text = n.ToString();
+        fieldEcuacionP5.text = "Por definir en codigo";
+
+        float numero1 = -1.333333333f;//-4/3
+        float cubo1 = (float)Math.Pow(numero1, 3);
+        float numero2 = -0.6666666667f;// -2/3
+        float cubo2 = (float)Math.Pow(numero2, 3);
+        float numero3 = 0.6666666667f;// 2/3
+        float cubo3 = (float)Math.Pow(numero3, 3);
+        float numero4 = 1.333333333f;// 4/3
+        float cubo4 = (float)Math.Pow(numero4, 3);
+
+
+        float q = (0) * (3 * (-2 * -2 * -2) - 10);
+        float z = (11) * (3 * (cubo1) - 10);
+        float x = (-14) * (3 * (cubo2) - 10);
+        float y = (26) * (3 * (0 * 0 * 0) - 10);
+        float u = (-14) * (3 * (cubo3) - 10);
+        float o = (11) * (3 * (cubo4) - 10);
+        float p = (0) * (3 * (2 * 2 * 2) - 10);
+
+        double i = (A * h) * (q + z + x + y + u + o + p);
+
+        Debug.Log("I: " + i);
     }
 
 }
