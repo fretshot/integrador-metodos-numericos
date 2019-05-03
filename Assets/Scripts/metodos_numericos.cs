@@ -5,18 +5,20 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class metodos_numericos : MonoBehaviour{
+public class metodos_numericos : MonoBehaviour {
 
     public TextMeshProUGUI textoCronometro;
     public TextMeshProUGUI textoNombreMetodo;
 
-    public TMP_InputField FieldX,fieldX1, fieldX2, fieldX3, fieldX4, fieldY1, fieldY2, fieldY3, fieldY4, fieldGx,fieldGxCPU;
-    public TMP_InputField fieldXi,fieldXiCPU,fieldEcuacion;
-    public TMP_InputField fieldX,fieldY,fieldZ,fieldXCPU,fieldYCPU,fieldZCPU;
+    public TMP_InputField FieldX, fieldX1, fieldX2, fieldX3, fieldX4, fieldY1, fieldY2, fieldY3, fieldY4, fieldGx, fieldGxCPU;
+    public TMP_InputField fieldXi, fieldXiCPU, fieldEcuacion;
+    public TMP_InputField fieldX, fieldY, fieldZ, fieldXCPU, fieldYCPU, fieldZCPU;
 
     public TMP_InputField FieldEcuacion, fieldXi1, fieldXi2, fieldXi3, fieldXi4, fieldYi1, fieldYi2, fieldYi3, fieldYi4;
     public TMP_InputField fieldGx1, fieldGx2, fieldGx3, fieldGx4;
     public TMP_InputField fieldGx1CPU, fieldGx2CPU, fieldGx3CPU, fieldGx4CPU;
+
+    public TMP_InputField fieldEcuacionP5, fieldLimites, fieldN, fieldI, fieldICPU;
 
     public GameObject p1IconGood;
     public GameObject p1IconBad;
@@ -26,11 +28,14 @@ public class metodos_numericos : MonoBehaviour{
     public GameObject p3IconBad;
     public GameObject p4IconGood;
     public GameObject p4IconBad;
+    public GameObject p5IconGood;
+    public GameObject p5IconBad;
 
     public GameObject screenP1;
     public GameObject screenP2;
     public GameObject screenP3;
     public GameObject screenP4;
+    public GameObject screenP5;
 
     public Button btnValidar;
     public Button btnVerRespuesta;
@@ -50,6 +55,8 @@ public class metodos_numericos : MonoBehaviour{
     float rx;
     float ry;
     float rz;
+
+    float i;
 
     bool aplicaMetodo;
 
@@ -152,7 +159,28 @@ public class metodos_numericos : MonoBehaviour{
 
             }
 
-            
+            if (screenP5.activeSelf) {
+
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = false;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+
+                if (aplicaMetodo == false) {
+                    fieldI.text = "No aplica el método";
+                    //Respuesta correcta
+                    p5IconGood.SetActive(true);
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    fieldI.text = "No aplica el método";
+                    p5IconBad.SetActive(true);
+                    Invoke("perder", 3);
+                }
+
+            }
+
+
 
         });
 
@@ -206,7 +234,16 @@ public class metodos_numericos : MonoBehaviour{
                 btnValidar.interactable = false;
                 btnNoAplicaElMetodo.interactable = false;
             }
-            
+
+            if (screenP5.activeSelf) {
+
+                fieldICPU.gameObject.SetActive(true);
+                fieldICPU.text = i.ToString("0.0000000");
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = true;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+            }
         });
 
         btnRendirse.onClick.AddListener(delegate {
@@ -226,7 +263,11 @@ public class metodos_numericos : MonoBehaviour{
             if (screenP4.activeSelf) {
 
             }
-            
+
+            if (screenP5.activeSelf) {
+
+            }
+
         });
 
         btnValidar.onClick.AddListener(delegate {
@@ -316,7 +357,29 @@ public class metodos_numericos : MonoBehaviour{
                 }
 
             }
-            
+
+            if (screenP5.activeSelf) {
+
+                if (fieldI.text.Contains(i.ToString())) {
+                    //Respuesta correcta
+                    p5IconGood.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    p5IconBad.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("perder", 3);
+                }
+
+            }
+
         });
 
         p1IconGood.SetActive(false);
@@ -335,6 +398,14 @@ public class metodos_numericos : MonoBehaviour{
         fieldXCPU.gameObject.SetActive(false);
         fieldYCPU.gameObject.SetActive(false);
         fieldZCPU.gameObject.SetActive(false);
+
+        p5IconGood.SetActive(false);
+        p5IconBad.SetActive(false);
+        fieldICPU.gameObject.SetActive(false);
+        fieldI.text = "";
+        fieldEcuacionP5.text = "";
+        fieldLimites.text = "";
+        fieldN.text = "";
 
         btnVerRespuesta.interactable = true;
         btnRendirse.interactable = true;
@@ -357,13 +428,15 @@ public class metodos_numericos : MonoBehaviour{
         fieldY.text = "";
         fieldZ.text = "";
 
+        
+
         currentTime = startingTime;
 
         inicializarDatos();
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 14;
+        opcion = 22;
 
         switch (opcion) {
             case 1:
@@ -371,6 +444,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 newtonHaciaAdelante();
                 break;
             case 2:
@@ -378,6 +452,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 newtonHaciaAtras();
                 break;
             case 3:
@@ -385,6 +460,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 newtonDiferenciasDivididas();
                 break;
             case 4:
@@ -393,12 +469,14 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 break;
             case 5:
                 screenP1.SetActive(false);
                 screenP2.SetActive(true);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 puntoFijo();
                 break;
             case 6:
@@ -406,6 +484,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(true);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 newtonRaphson();
                 break;
             case 7:
@@ -413,6 +492,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(true);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 falsaPosicion();
                 break;
             case 8:
@@ -420,6 +500,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(true);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 secante();
                 break;
             case 9:
@@ -427,6 +508,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 montante();
                 break;
             case 10:
@@ -434,6 +516,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 gaussJordan();
                 break;
             case 11:
@@ -441,6 +524,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 eliminacionGaussiana();
                 break;
             case 12:
@@ -448,6 +532,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 gaussSeidel();
                 break;
             case 13:
@@ -455,6 +540,7 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
+                screenP5.SetActive(false);
                 jacobi();
                 break;
             case 14:
@@ -462,69 +548,79 @@ public class metodos_numericos : MonoBehaviour{
                 screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(true);
+                screenP5.SetActive(false);
                 lineaRecta();
                 break;
             case 15:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
-                screenP4.SetActive(false);
+                screenP4.SetActive(true);
+                screenP5.SetActive(false);
                 cuadratica();
                 break;
             case 16:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
-                screenP4.SetActive(false);
+                screenP4.SetActive(true);
+                screenP5.SetActive(false);
                 cubica();
                 break;
             case 17:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
-                screenP4.SetActive(false);
+                screenP4.SetActive(true);
+                screenP5.SetActive(false);
                 linealConFuncion();
                 break;
             case 18:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
-                screenP4.SetActive(false);
+                screenP4.SetActive(true);
+                screenP5.SetActive(false);
                 cuadraticaConFuncion();
                 break;
             case 19:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(true);
                 reglaTrapezoidal();
                 break;
             case 20:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(true);
                 regla13Simpson();
                 break;
             case 21:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(true);
                 regla38Simpson();
                 break;
             case 22:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(true);
                 newtonCotesCerradas();
                 break;
             case 23:
                 screenP1.SetActive(false);
-                screenP2.SetActive(true);
+                screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
+                screenP5.SetActive(true);
                 newtonCotesAbiertas();
                 break;
 
@@ -1029,9 +1125,32 @@ public class metodos_numericos : MonoBehaviour{
         aplicaMetodo = true;
     }
 
+    // NEWTON COTES CERRADAS
     private void newtonCotesCerradas() {
         textoNombreMetodo.text = "Newton - Cotes (Cerradas)";
         aplicaMetodo = true;
+
+        float a = -2, b = 2, n = 4;
+
+        fieldLimites.text = "de "+a.ToString()+" a "+b.ToString();
+        fieldN.text = n.ToString();
+        fieldEcuacionP5.text = "Por definir en codigo";
+
+        float h = (b - a) / (n);
+        float A = 0.04444444444f; // 2 / 45;Constante de Cotes cerradas cuando n=4
+
+
+        float q = (7) * (3 * (-2 * -2 * -2) - 10);
+        float z = (32) * (3 * (-1 * -1 * -1) - 10);
+        float x = (12) * (3 * (0) - 10);
+        float y = (32) * (3 * (1 * 1 * 1) - 10);
+        float u = (7) * (3 * (2 * 2 * 2) - 10);
+
+
+        i = (A * h) * (q + z + x + y + u);
+
+        Debug.Log("I: " + i);
+
     }
 
     private void newtonCotesAbiertas() {
