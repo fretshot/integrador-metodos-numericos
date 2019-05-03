@@ -1115,6 +1115,25 @@ public class metodos_numericos : MonoBehaviour {
     private void reglaTrapezoidal() {
         textoNombreMetodo.text = "Regla trapezoidal";
         aplicaMetodo = true;
+
+        float a = 2.0f, b = 3.0f, n = 4.0f;
+        float h = (b - a) / n;
+
+        fieldLimites.text = "de " + a.ToString() + " a " + b.ToString();
+        fieldN.text = n.ToString();
+        fieldEcuacionP5.text = "Por definir en codigo";
+
+        //double I=(h/2)*((1/1+(2*2))+2*((1/1+(2.25*2.25))+(1/1+(2.5+2.5))+(1/1+(2.75*2.75)))+(1/1+(3*3)));
+
+        float A = (1.0f / (1.0f + (2 * 2)));
+        float B = 2 * (1.0f / (1.0f + (2.25f * 2.25f)));
+        float C = 2 * (1.0f / (1.0f + (2.5f * 2.5f)));
+        float D = 2 * (1.0f / (1.0f + (2.75f * 2.75f)));
+        float E = 1.0f / (1.0f + (3.0f * 3.0f));
+
+        i = (h / 2) * (A + B + C + D + E);
+
+        Debug.Log("I: " + i);
     }
 
     private void regla13Simpson() {
