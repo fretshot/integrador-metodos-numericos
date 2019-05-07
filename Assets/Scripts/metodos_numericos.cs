@@ -20,6 +20,8 @@ public class metodos_numericos : MonoBehaviour {
 
     public TMP_InputField fieldEcuacionP5, fieldLimites, fieldN, fieldI, fieldICPU;
 
+    public TMP_InputField fieldEcuacionP6, fieldy0, fieldY0p, fieldH, fieldYp, fieldYpCPU;
+
     public GameObject p1IconGood;
     public GameObject p1IconBad;
     public GameObject p2IconGood;
@@ -30,12 +32,15 @@ public class metodos_numericos : MonoBehaviour {
     public GameObject p4IconBad;
     public GameObject p5IconGood;
     public GameObject p5IconBad;
+    public GameObject p6IconGood;
+    public GameObject p6IconBad;
 
     public GameObject screenP1;
     public GameObject screenP2;
     public GameObject screenP3;
     public GameObject screenP4;
     public GameObject screenP5;
+    public GameObject screenP6;
 
     public Button btnValidar;
     public Button btnVerRespuesta;
@@ -58,9 +63,16 @@ public class metodos_numericos : MonoBehaviour {
 
     float i;
 
+    float Yp;
+
     bool aplicaMetodo;
 
     int opcion;
+
+    static List<int> _Ec1;
+    static List<int> _Ec2;
+    static List<int> _Ec3;
+    static List<int> _rnd;
 
     private void OnEnable() {
 
@@ -180,6 +192,27 @@ public class metodos_numericos : MonoBehaviour {
 
             }
 
+            if (screenP6.activeSelf) {
+
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = false;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+
+                if (aplicaMetodo == false) {
+                    fieldY0p.text = "No aplica el método";
+                    //Respuesta correcta
+                    p6IconGood.SetActive(true);
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    fieldY0p.text = "No aplica el método";
+                    p6IconBad.SetActive(true);
+                    Invoke("perder", 3);
+                }
+
+            }
+
 
 
         });
@@ -244,6 +277,16 @@ public class metodos_numericos : MonoBehaviour {
                 btnValidar.interactable = false;
                 btnNoAplicaElMetodo.interactable = false;
             }
+
+            if (screenP6.activeSelf) {
+
+                fieldYpCPU.gameObject.SetActive(true);
+                fieldYpCPU.text = Yp.ToString("0.0000000");
+                btnVerRespuesta.interactable = false;
+                btnRendirse.interactable = true;
+                btnValidar.interactable = false;
+                btnNoAplicaElMetodo.interactable = false;
+            }
         });
 
         btnRendirse.onClick.AddListener(delegate {
@@ -265,6 +308,10 @@ public class metodos_numericos : MonoBehaviour {
             }
 
             if (screenP5.activeSelf) {
+
+            }
+
+            if (screenP6.activeSelf) {
 
             }
 
@@ -380,6 +427,28 @@ public class metodos_numericos : MonoBehaviour {
 
             }
 
+            if (screenP6.activeSelf) {
+
+                if (fieldYp.text.Contains(Yp.ToString())) {
+                    //Respuesta correcta
+                    p6IconGood.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("ganar", 3);
+                } else {
+                    //Respuesta incorrecta
+                    p6IconBad.SetActive(true);
+                    btnVerRespuesta.interactable = false;
+                    btnRendirse.interactable = false;
+                    btnValidar.interactable = false;
+                    btnNoAplicaElMetodo.interactable = false;
+                    Invoke("perder", 3);
+                }
+
+            }
+
         });
 
         p1IconGood.SetActive(false);
@@ -406,6 +475,14 @@ public class metodos_numericos : MonoBehaviour {
         fieldEcuacionP5.text = "";
         fieldLimites.text = "";
         fieldN.text = "";
+
+        p6IconGood.SetActive(false);
+        p6IconBad.SetActive(false);
+        fieldYpCPU.gameObject.SetActive(false);
+        fieldEcuacionP6.text = "";
+        fieldy0.text = "";
+        fieldY0p.text = "";
+        fieldH.text = "";
 
         btnVerRespuesta.interactable = true;
         btnRendirse.interactable = true;
@@ -437,7 +514,6 @@ public class metodos_numericos : MonoBehaviour {
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
         opcion = 19;
-
         switch (opcion) {
             case 1:
                 screenP1.SetActive(true);
@@ -445,6 +521,8 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 newtonHaciaAdelante();
                 break;
             case 2:
@@ -453,6 +531,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 newtonHaciaAtras();
                 break;
             case 3:
@@ -461,15 +540,17 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 newtonDiferenciasDivididas();
                 break;
             case 4:
-                laGrange();
                 screenP1.SetActive(true);
                 screenP2.SetActive(false);
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
+                laGrange();
                 break;
             case 5:
                 screenP1.SetActive(false);
@@ -477,6 +558,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 puntoFijo();
                 break;
             case 6:
@@ -485,6 +567,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 newtonRaphson();
                 break;
             case 7:
@@ -493,6 +576,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 falsaPosicion();
                 break;
             case 8:
@@ -501,6 +585,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 secante();
                 break;
             case 9:
@@ -509,6 +594,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 montante();
                 break;
             case 10:
@@ -517,6 +603,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 gaussJordan();
                 break;
             case 11:
@@ -525,6 +612,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 eliminacionGaussiana();
                 break;
             case 12:
@@ -533,6 +621,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 gaussSeidel();
                 break;
             case 13:
@@ -541,6 +630,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(true);
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 jacobi();
                 break;
             case 14:
@@ -549,6 +639,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(true);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 lineaRecta();
                 break;
             case 15:
@@ -557,6 +648,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(true);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 cuadratica();
                 break;
             case 16:
@@ -565,6 +657,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(true);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 cubica();
                 break;
             case 17:
@@ -573,6 +666,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(true);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 linealConFuncion();
                 break;
             case 18:
@@ -581,6 +675,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(true);
                 screenP5.SetActive(false);
+                screenP6.SetActive(false);
                 cuadraticaConFuncion();
                 break;
             case 19:
@@ -589,6 +684,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(true);
+                screenP6.SetActive(false);
                 reglaTrapezoidal();
                 break;
             case 20:
@@ -597,6 +693,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(true);
+                screenP6.SetActive(false);
                 regla13Simpson();
                 break;
             case 21:
@@ -605,6 +702,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(true);
+                screenP6.SetActive(false);
                 regla38Simpson();
                 break;
             case 22:
@@ -613,6 +711,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(true);
+                screenP6.SetActive(false);
                 newtonCotesCerradas();
                 break;
             case 23:
@@ -621,14 +720,93 @@ public class metodos_numericos : MonoBehaviour {
                 screenP3.SetActive(false);
                 screenP4.SetActive(false);
                 screenP5.SetActive(true);
+                screenP6.SetActive(false);
                 newtonCotesAbiertas();
                 break;
-
+            case 24:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                EulerHaciaAdelante();
+                break;
+            case 25:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                EulerHaciaAtras();
+                break;
+            case 26:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                EulerModificado();
+                break;
+            case 27:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                RK2Orden();
+                break;
+            case 28:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                RK3Orden();
+                break;
+            case 29:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                RK4Orden();
+                break;
+            case 30:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                RK13Simpson();
+                break;
+            case 31:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                RK38Simpson();
+                break;
+            case 32:
+                screenP1.SetActive(false);
+                screenP2.SetActive(false);
+                screenP3.SetActive(false);
+                screenP4.SetActive(false);
+                screenP5.SetActive(false);
+                screenP6.SetActive(true);
+                RKOrdenSuperior();
+                break;
 
         }
     }
-
-    
 
     void Update(){
         stopwatch();
@@ -647,7 +825,6 @@ public class metodos_numericos : MonoBehaviour {
             NotificationCenter.DefaultCenter().PostNotification(this, "playerLost");
         }
     }
-
 
 
     private void inicializarDatos() {
@@ -1084,10 +1261,10 @@ public class metodos_numericos : MonoBehaviour {
         gx3 = a0 + a1 * x3;
         gx4 = a0 + a1 * x4;
 
-        Debug.Log("gx1: " + gx1);
-        Debug.Log("gx2: " + gx2);
-        Debug.Log("gx3: " + gx3);
-        Debug.Log("gx4: " + gx4);
+        Debug.Log("gx1: " + gx1.ToString("0.0000000"));
+        Debug.Log("gx2: " + gx2.ToString("0.0000000"));
+        Debug.Log("gx3: " + gx3.ToString("0.0000000"));
+        Debug.Log("gx4: " + gx4.ToString("0.0000000"));
     }
 
     private void cuadratica() {
@@ -1113,18 +1290,18 @@ public class metodos_numericos : MonoBehaviour {
 
     // REGLA TRAPEZOIDAL
     private void reglaTrapezoidal() {
+
         textoNombreMetodo.text = "Regla trapezoidal";
         aplicaMetodo = true;
 
         float a = 2.0f, b = 3.0f, n = 4.0f;
         float h = (b - a) / n;
 
+        string ecuacion = "1/(1+x^2)dx";
+        fieldEcuacionP5.text = ecuacion;
         fieldLimites.text = "de " + a.ToString() + " a " + b.ToString();
         fieldN.text = n.ToString();
-        fieldEcuacionP5.text = "Por definir en codigo";
-
-        //double I=(h/2)*((1/1+(2*2))+2*((1/1+(2.25*2.25))+(1/1+(2.5+2.5))+(1/1+(2.75*2.75)))+(1/1+(3*3)));
-
+        
         float A = (1.0f / (1.0f + (2 * 2)));
         float B = 2 * (1.0f / (1.0f + (2.25f * 2.25f)));
         float C = 2 * (1.0f / (1.0f + (2.5f * 2.5f)));
@@ -1133,17 +1310,64 @@ public class metodos_numericos : MonoBehaviour {
 
         i = (h / 2) * (A + B + C + D + E);
 
-        Debug.Log("I: " + i);
+        Debug.Log("I: " + i.ToString("0.0000000"));
     }
 
+    // "1/3 DE SIPMPSON"
     private void regla13Simpson() {
+
         textoNombreMetodo.text = "Regla 1/3 Simpson";
         aplicaMetodo = true;
+
+        float a = 2, b = 3, n = 10, temp = 0, res = 0;
+        float h = (b - a) / n;
+
+        string ecuacion = "1/(1+x^2)dx";
+        fieldEcuacionP5.text = ecuacion;
+        fieldLimites.text = "de " + a.ToString() + " a " + b.ToString();
+        fieldN.text = n.ToString();
+
+        float cc = (b - a) / h;
+        for (int g = 1; g < cc; g++) {
+            int v = g % 2;
+            if (v == 0) {
+                temp = integral3((a + (h * g)));
+
+                res = res + (temp * 2);
+            } else {
+                temp = integral3((a + (h * g)));
+
+                res = res + (4 * temp);
+            }
+        }
+        i = (integral3(a) + res + integral3(b));
+        i = (h / 3) * (integral3(a) + res + integral3(b));
+        Debug.Log("I: " + i.ToString("0.0000000"));
     }
 
+    // 3/8 DE SIMPSON
     private void regla38Simpson() {
         textoNombreMetodo.text = "Regla 3/8 Simpson";
         aplicaMetodo = true;
+
+        float a = 0, b = 1, n = 3;
+        float h = (b - a) / n;
+        float cc = (b - a) / h;
+
+        string ecuacion = "1/(1+x^2)dx";
+        fieldEcuacionP5.text = ecuacion;
+        fieldLimites.text = "de " + a.ToString() + " a " + b.ToString();
+        fieldN.text = n.ToString();
+
+        float res = 0.0f;
+        for (int g = 1; g < cc; g++) {
+            float temp = integral3((a + (h * g)));
+
+            res = res + temp;
+        }
+        i = (integral3(a) + (3 * res) + integral3(b));
+        i = ((3 * h) / 8) * (integral3(a) + (3 * res) + integral3(b));
+        Debug.Log("I: " + i.ToString("0.0000000"));
     }
 
     // NEWTON COTES CERRADAS
@@ -1153,6 +1377,8 @@ public class metodos_numericos : MonoBehaviour {
 
         float a = -2, b = 2, n = 4;
 
+        string ecuacion = "(3+x^3-10)dx";
+        fieldEcuacionP5.text = ecuacion;
         fieldLimites.text = "de "+a.ToString()+" a "+b.ToString();
         fieldN.text = n.ToString();
         fieldEcuacionP5.text = "Por definir en codigo";
@@ -1160,18 +1386,15 @@ public class metodos_numericos : MonoBehaviour {
         float h = (b - a) / (n);
         float A = 0.04444444444f; // 2 / 45;Constante de Cotes cerradas cuando n=4
 
-
         float q = (7) * (3 * (-2 * -2 * -2) - 10);
         float z = (32) * (3 * (-1 * -1 * -1) - 10);
         float x = (12) * (3 * (0) - 10);
         float y = (32) * (3 * (1 * 1 * 1) - 10);
         float u = (7) * (3 * (2 * 2 * 2) - 10);
 
-
         i = (A * h) * (q + z + x + y + u);
 
-        Debug.Log("I: " + i);
-
+        Debug.Log("I: " + i.ToString("0.0000000"));
     }
 
     // NEWTON COTES ABIERTAS
@@ -1183,6 +1406,8 @@ public class metodos_numericos : MonoBehaviour {
         float h = (b - a) / (n + 2);
         float A = 0.3f; //6 / 20;Constante de Cotes abiertas cuando n=4
 
+        string ecuacion = "(3+x^3-10)dx";
+        fieldEcuacionP5.text = ecuacion;
         fieldLimites.text = "de " + a.ToString() + " a " + b.ToString();
         fieldN.text = n.ToString();
         fieldEcuacionP5.text = "Por definir en codigo";
@@ -1196,7 +1421,6 @@ public class metodos_numericos : MonoBehaviour {
         float numero4 = 1.333333333f;// 4/3
         float cubo4 = (float)Math.Pow(numero4, 3);
 
-
         float q = (0) * (3 * (-2 * -2 * -2) - 10);
         float z = (11) * (3 * (cubo1) - 10);
         float x = (-14) * (3 * (cubo2) - 10);
@@ -1207,7 +1431,562 @@ public class metodos_numericos : MonoBehaviour {
 
         double i = (A * h) * (q + z + x + y + u + o + p);
 
-        Debug.Log("I: " + i);
+        Debug.Log("I: " + i.ToString("0.0000000"));
     }
+
+    private void EulerHaciaAtras() {
+        textoNombreMetodo.text = "Euler hacia atrás";
+        aplicaMetodo = true;
+    }
+
+    private void EulerHaciaAdelante() {
+        textoNombreMetodo.text = "Euler hacia adelante";
+        aplicaMetodo = true;
+    }
+
+    private void EulerModificado() {
+        textoNombreMetodo.text = "Euler modificado";
+        aplicaMetodo = true;
+        System.Random random = new System.Random();
+        double t0 = 0, h = random.Next(1, 10), y0 = random.Next(11, 100), y1 = y0, t1 = (t0 + h);
+        fieldH.text = h.ToString();
+        fieldy0.text = y0.ToString();
+        
+        h = h / 10;
+        y0 = y0 / 10;
+        y1 = y0;
+        //Console.WriteLine($"y0 = {y0}, y1 = {y1}, h = {h}, t0 = {t0} y t1 = {t1}");
+        Debug.Log($"y0 = {y0}, y1 = {y1}, h = {h}, t0 = {t0} y t1 = {t1}");
+        ecuacion1();
+        ecuacion2();
+        numsRandYYT();
+        double yf = y0 + ((h / 2) * (ecuacionYYT(y0, t0) + ecuacionYYT(y1, t1)));
+        //Console.WriteLine($"y1 = {yf}");
+        Debug.Log($"y1 = {yf}");
+    }
+
+    private void RK2Orden() {
+        textoNombreMetodo.text = "Runge - Kutta 2° orden";
+        aplicaMetodo = true;
+    }
+
+    private void RK3Orden() {
+        textoNombreMetodo.text = "Runge - Kutta 3° orden";
+        aplicaMetodo = true;
+    }
+
+
+    private void RK4Orden() {
+        textoNombreMetodo.text = "Runge - Kutta 4° orden";
+        aplicaMetodo = true;
+    }
+
+    private void RK13Simpson() {
+        textoNombreMetodo.text = "Runge - Kutta 1/3 Simpson";
+        aplicaMetodo = true;
+    }
+
+    private void RK38Simpson() {
+        textoNombreMetodo.text = "Runge - Kutta 3/8 Simpson";
+        aplicaMetodo = true;
+    }
+
+    private void RKOrdenSuperior() {
+        textoNombreMetodo.text = "Runge - Kutta Orden Superior";
+        aplicaMetodo = true;
+    }
+
+    //=================================== FIN DE LOS METODOS ===========================//
+
+    static void ecuacion1() {
+        System.Random random = new System.Random();
+        int rnum = random.Next(0, 4);
+        int vrf = rnum;
+        _Ec1 = new List<int>() { rnum };
+        rnum = random.Next(3, 6);
+        int count = rnum;
+        int v = 0;
+        //Console.WriteLine($"Largo  de la lista {(count + 1)}");
+        for (int i = 0; i < count; i++) {
+            //Console.WriteLine($"numero en la lista {(i + 1)}");
+            rnum = random.Next(0, 4);
+            do {
+                if (rnum == vrf) {
+                    rnum = random.Next(0, 4);
+                } else {
+                    v = 1;
+                }
+            } while (v == 0);
+            v = 0;
+            _Ec1.Add(rnum);
+            vrf = rnum;
+
+            //Console.WriteLine($"{(i+1)} = {_Ec1[(i+1)]}");
+        }
+    }
+
+    static void ecuacion2() {
+        System.Random random = new System.Random();
+        int rnum = random.Next(0, 4);
+        int vrf = rnum;
+        _Ec2 = new List<int>() { rnum };
+        rnum = random.Next(1, 3);
+        int count = rnum;
+        int v = 0;
+        //Console.WriteLine($"Largo  de la lista {(count + 1)}");
+        for (int i = 0; i < count; i++) {
+            //Console.WriteLine($"numero en la lista {(i + 1)}");
+            rnum = random.Next(0, 4);
+            do {
+                if (rnum == vrf) {
+                    rnum = random.Next(0, 4);
+                } else {
+                    v = 1;
+                }
+            } while (v == 0);
+            v = 0;
+            _Ec2.Add(rnum);
+            vrf = rnum;
+            //Console.WriteLine($"{(i+1)} = {_Ec2[(i+1)]}");
+        }
+    }
+    static void ecuacion3() {
+        System.Random random = new System.Random();
+        int rnum = random.Next(0, 4); //operador inicial
+        int vrf = rnum;
+        _Ec3 = new List<int>() { rnum };
+        rnum = random.Next(3, 6); // Largo de la ecuacion, numero de operadores
+        int count = rnum;
+        int v = 0;
+        for (int i = 0; i < count; i++) {
+            rnum = random.Next(0, 5);
+            do {
+                if (rnum == vrf) {
+                    rnum = random.Next(0, 4);
+                } else {
+                    v = 1;
+                }
+            } while (v == 0);
+            v = 0;
+            _Ec3.Add(rnum);
+            vrf = rnum;
+            //Console.WriteLine($"{(i+1)} = {_Ec1[(i+1)]}");
+        }
+    }
+
+    static void numsRandYT() {
+        System.Random random = new System.Random();
+        string ecu = "";
+        _rnd = new List<int>();
+        int rnum = 0;
+        int cc = _Ec3.Count;
+        for (int i = 0; i < (cc); i++) {
+            int op = _Ec3[i];
+            switch (op) {
+                case 0: //Adicion
+                    if (i == 0) {
+                        rnum = random.Next(0, 9);
+                        _rnd.Add(rnum);
+                        ecu = "(" + rnum + " + y)";
+                    } else {
+                        rnum = random.Next(1, 9);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            ecu = "(" + ecu + " + t)";
+                        } else {
+                            ecu = "(" + ecu + " + " + rnum + ")";
+                        }
+
+                    }
+
+                    break;
+
+                case 1: //sustraccion
+                    if (i == 0) {
+                        rnum = random.Next(0, 9);
+                        _rnd.Add(rnum);
+                        ecu = "(" + rnum + " - y)";
+                    } else {
+                        rnum = random.Next(1, 9);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            ecu = "(" + ecu + " - t)";
+                        } else {
+                            ecu = "(" + ecu + " - " + rnum + ")";
+                        }
+                    }
+
+                    break;
+
+                case 2: //Exponencial
+                    if (i == 0) {
+                        rnum = random.Next(1, 4);
+                        _rnd.Add(rnum);
+                        ecu = "(y ^ " + rnum + ")";
+                    } else {
+                        rnum = random.Next(2, 4);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            goto case 1;
+                        } else {
+                            ecu = "(" + ecu + " ^ " + rnum + ")";
+                        }
+                    }
+                    break;
+
+                case 3: //multiplicasion
+                    if (i == 0) {
+                        rnum = random.Next(1, 7);
+                        _rnd.Add(rnum);
+                        ecu = "(" + rnum + " * y)";
+                    } else {
+                        rnum = random.Next(2, 7);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            ecu = "(" + ecu + " * t)";
+                        } else {
+                            ecu = "(" + ecu + " * " + rnum + ")";
+                        }
+                    }
+                    break;
+
+                case 4: //division
+                    if (i == 0) {
+                        goto case 3;
+                    } else {
+                        rnum = random.Next(2, 7);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            ecu = "(" + ecu + " / t)";
+                        } else {
+                            ecu = "(" + ecu + " / " + rnum + ")";
+                        }
+                    }
+                    break;
+            }
+        }
+        Debug.Log(ecu);
+    }
+
+    static void numsRandYYT() {
+        System.Random random = new System.Random();
+        string ecu = "";
+        _rnd = new List<int>();
+        int rnum = 0;
+        int cc = _Ec1.Count;
+        for (int i = 0; i < (cc); i++) {
+            int op = _Ec1[i];
+            switch (op) {
+                case 0: //Adicion
+                    if (i == 0) {
+                        rnum = random.Next(1, 9);
+                        _rnd.Add(rnum);
+                        ecu = "(" + rnum + " + y)";
+                    } else {
+                        rnum = random.Next(1, 9);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            ecu = "(" + ecu + " + t)";
+                        } else {
+                            ecu = "(" + ecu + " + " + rnum + ")";
+                        }
+
+                    }
+                    //Console.WriteLine(ecu);
+                    break;
+
+                case 1: //sustraccion
+                    if (i == 0) {
+                        rnum = random.Next(0, 9);
+                        _rnd.Add(rnum);
+                        ecu = "(" + rnum + " - y)";
+                    } else {
+                        rnum = random.Next(1, 9);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            ecu = "(" + ecu + " - t)";
+                        } else {
+                            ecu = "(" + ecu + " - " + rnum + ")";
+                        }
+                    }
+                    break;
+
+                case 2: //Exponencial
+                    if (i == 0) {
+                        rnum = random.Next(2, 4);
+                        _rnd.Add(rnum);
+                        ecu = "(y ^ " + rnum + ")";
+                    } else {
+                        rnum = random.Next(2, 4);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            goto case 3;
+                        } else {
+                            ecu = "(" + ecu + " ^ " + rnum + ")";
+                        }
+                    }
+                    break;
+
+                case 3: //multiplicasion
+                    if (i == 0) {
+                        rnum = random.Next(1, 7);
+                        _rnd.Add(rnum);
+                        ecu = "(" + rnum + " * y)";
+                    } else {
+                        rnum = random.Next(2, 7);
+                        _rnd.Add(rnum);
+                        if (i == 1) {
+                            ecu = "(" + ecu + " * t)";
+                        } else {
+                            ecu = "(" + ecu + " * " + rnum + ")";
+                        }
+                    }
+                    break;
+            }
+        }
+        ecu = ecu + "/";
+
+        cc = _Ec2.Count;
+        string ecu2 = "";
+        for (int i = 0; i < (cc); i++) {
+            int op = _Ec2[i];
+            switch (op) {
+                case 0: //Adicion
+                    if (i == 1) {
+                        rnum = random.Next(1, 9);
+                        _rnd.Add(rnum);
+                        ecu2 = "(" + rnum + " + y)";
+                    } else {
+                        rnum = random.Next(1, 9);
+                        _rnd.Add(rnum);
+                        ecu2 = "(" + ecu2 + " + " + rnum + ")";
+                    }
+                    //Console.WriteLine(ecu);
+                    break;
+
+                case 1: //sustraccion
+                    if (i == 1) {
+                        rnum = random.Next(0, 9);
+                        _rnd.Add(rnum);
+                        ecu2 = "(" + rnum + " - y)";
+                    } else {
+                        rnum = random.Next(1, 9);
+                        _rnd.Add(rnum);
+                        ecu2 = "(" + ecu2 + " - " + rnum + ")";
+                    }
+                    break;
+
+                case 2: //Exponencial
+                    if (i == 1) {
+                        rnum = random.Next(2, 4);
+                        _rnd.Add(rnum);
+                        ecu2 = "(y ^ " + rnum + ")";
+                    } else {
+                        rnum = random.Next(2, 4);
+                        _rnd.Add(rnum);
+                        ecu2 = "(" + ecu2 + " ^ " + rnum + ")";
+                    }
+                    break;
+
+                case 3: //multiplicasion
+                    if (i == 1) {
+                        rnum = random.Next(1, 7);
+                        _rnd.Add(rnum);
+                        ecu2 = "(" + rnum + " * y)";
+                    } else {
+                        rnum = random.Next(2, 7);
+                        _rnd.Add(rnum);
+                        ecu2 = "(" + ecu2 + " * " + rnum + ")";
+                    }
+                    break;
+            }
+        }
+        ecu = ecu + ecu2;
+        Debug.Log(ecu);
+    }
+
+    static double ecuacionYT(double y, double t) {
+        double yx = 0.0;
+        int cc = _Ec3.Count;
+        for (int i = 0; i < (cc); i++) {
+            int op = _Ec3[i];
+            switch (op) {
+                case 0: //Adicion
+                    if (i == 0) {
+                        yx = _rnd[i] + y;
+                    } else {
+                        if (i == 1) {
+                            yx = yx + t;
+                        } else {
+                            yx = yx + _rnd[i];
+                        }
+                    }
+                    break;
+
+                case 1: //sustraccion
+                    if (i == 0) {
+                        yx = _rnd[i] - y;
+                    } else {
+                        if (i == 1) {
+                            yx = yx - t;
+                        } else {
+                            yx = yx - _rnd[i];
+                        }
+                    }
+                    break;
+
+                case 2: //Exponencial
+                    if (i == 0) {
+                        yx = Math.Pow(y, _rnd[i]);
+                    } else {
+                        if (i == 1) {
+                            goto case 1;
+                        } else {
+                            yx = Math.Pow(yx, _rnd[i]);
+                        }
+                    }
+                    break;
+
+                case 3: //multiplicasion
+                    if (i == 0) {
+                        yx = _rnd[i] * y;
+                    } else {
+                        if (i == 1) {
+                            yx = _rnd[i] * t;
+                        } else {
+                            yx = yx * _rnd[i];
+                        }
+                    }
+                    break;
+
+                case 4: //division
+                    if (i == 0) {
+                        goto case 3;
+                    } else {
+                        if (i == 1) {
+                            yx = yx / t;
+                        } else {
+                            yx = yx / _rnd[i];
+                        }
+                    }
+                    break;
+            }
+        }
+        return yx;
+    }
+
+    static double ecuacionYYT(double y, double t) {
+        double yx = 0.0;
+        int cc = _Ec1.Count;
+        for (int i = 0; i < (cc); i++) {
+            int op = _Ec1[i];
+            switch (op) {
+                case 0: //Adicion
+                    if (i == 0) {
+                        yx = _rnd[i] + y;
+                    } else {
+                        if (i == 1) {
+                            yx = yx + t;
+                        } else {
+                            yx = yx + _rnd[i];
+                        }
+                    }
+                    break;
+
+                case 1: //sustraccion
+                    if (i == 0) {
+                        yx = _rnd[i] - y;
+                    } else {
+                        if (i == 1) {
+                            yx = yx - t;
+                        } else {
+                            yx = yx - _rnd[i];
+                        }
+                    }
+
+                    break;
+
+                case 2: //Exponencial
+                    if (i == 0) {
+                        yx = Math.Pow(y, _rnd[i]);
+                    } else {
+                        if (i == 1) {
+                            goto case 3;
+                        } else {
+                            yx = Math.Pow(yx, _rnd[i]);
+                        }
+                    }
+
+                    break;
+
+                case 3: //multiplicasion
+                    if (i == 0) {
+                        yx = _rnd[i] * y;
+                    } else {
+                        if (i == 1) {
+                            yx = yx * t;
+                        } else {
+                            yx = yx * _rnd[i];
+                        }
+                    }
+                    break;
+            }
+        }
+
+        int cr = cc; //Largo de _Ec1
+        cc = _Ec2.Count;
+        double yp = 0.0;
+        for (int i = 0; i < (cc); i++) {
+            int j = i + cr;
+            int op = _Ec2[i];
+            switch (op) {
+                case 0: //Adicion
+                    if (i == 0) {
+                        yp = _rnd[j] + y;
+                    } else {
+                        yp = yp + _rnd[j];
+                    }
+                    break;
+
+                case 1: //sustraccion
+                    if (i == 0) {
+                        yp = _rnd[j] - y;
+                    } else {
+                        yp = yp - _rnd[j];
+                    }
+
+                    break;
+
+                case 2: //Exponencial
+                    if (i == 0) {
+                        yp = Math.Pow(y, _rnd[j]);
+                    } else {
+                        yp = Math.Pow(yp, _rnd[j]);
+                    }
+                    break;
+
+                case 3: //multiplicasion
+                    if (i == 0) {
+                        yp = _rnd[j] * y;
+                    } else {
+                        yp = yp * _rnd[j];
+                    }
+                    break;
+            }
+        }
+        yx = yx / yp;
+        return yx;
+    }
+
+
+    static float integral4(float x) {
+        float y = (float)(Math.Pow(x, 3)) * (float)(Math.Pow((Math.E), x));
+        return y;
+    }
+    static float integral3(float x) {
+        float y = 1 / (1 + (float)(Math.Pow(x, 2)));
+        return y;
+    }
+
 
 }
