@@ -517,7 +517,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 27;
+        opcion = 29;
         switch (opcion) {
             case 1:
                 screenP1.SetActive(true);
@@ -1569,6 +1569,41 @@ public class metodos_numericos : MonoBehaviour {
     private void RK13Simpson() {
         textoNombreMetodo.text = "Runge - Kutta 1/3 Simpson";
         aplicaMetodo = true;
+
+        System.Random random = new System.Random();
+        double y = random.Next(1, 10), h = random.Next(1, 10), t = 0;
+        y = y / 10;
+        h = h / 10;
+
+        //Console.WriteLine($"y = {y}, h = {h} y t = {t}");
+
+        fieldY0P6.text = y.ToString();
+        fieldT0P6.text = t.ToString();
+        fieldHP6.text = h.ToString();
+
+        fieldT1P6.gameObject.SetActive(false);
+        fieldY1P6.gameObject.SetActive(false);
+        txtY1.SetActive(false);
+        txtT1.SetActive(false);
+
+        ecuacion1();
+        ecuacion2();
+        numsRandYYT();
+        double k1 = h * ecuacionYYT(y, t);
+        double k2 = h * ecuacionYYT((y + (k1 / 2)), (t + (h / 2)));
+        double k3 = h * ecuacionYYT((y + (k2 / 2)), (t + (h / 2)));
+        double k4 = h * ecuacionYYT((y + k3), (t + h));
+
+        yf = y + ((k1 + (2 * k2) + (2 * k3) + k4) / 6);
+        yf = Math.Round(yf, 8);
+
+        //Console.WriteLine($"k1 = {k1} \nk2 = {k2}\nk3 = {k3}\nk4 = {k4}\ny1 = {y1}");
+
+        if (yf.Equals("Infinito")) {
+            aplicaMetodo = false;
+        }
+
+        Debug.Log("yf: " + yf);
     }
 
     private void RK38Simpson() {
