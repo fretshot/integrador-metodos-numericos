@@ -21,6 +21,7 @@ public class metodos_numericos : MonoBehaviour {
     public TMP_InputField fieldEcuacionP5, fieldLimites, fieldN, fieldI, fieldICPU;
 
     public TMP_InputField fieldEcuacionP6, fieldY0P6, fieldT0P6, fieldHP6, fieldY1P6, fieldT1P6, fieldY1AnsP6, fieldY1AnsCPUP6;
+    public GameObject txtY1, txtT1;
 
     public GameObject p1IconGood;
     public GameObject p1IconBad;
@@ -428,7 +429,7 @@ public class metodos_numericos : MonoBehaviour {
             }
 
             if (screenP6.activeSelf) {
-
+                
                 if (fieldY1AnsP6.text.Contains(yf.ToString())) {
                     //Respuesta correcta
                     p6IconGood.SetActive(true);
@@ -507,7 +508,8 @@ public class metodos_numericos : MonoBehaviour {
         fieldY.text = "";
         fieldZ.text = "";
 
-        
+
+        fieldY1AnsP6.text = "";
 
         currentTime = startingTime;
 
@@ -515,7 +517,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 26;
+        opcion = 25;
         switch (opcion) {
             case 1:
                 screenP1.SetActive(true);
@@ -741,7 +743,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                EulerHaciaAtras();
+                EulerModificado();
                 break;
             case 26:
                 screenP1.SetActive(false);
@@ -750,7 +752,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                EulerModificado();
+                RK2Orden();
                 break;
             case 27:
                 screenP1.SetActive(false);
@@ -759,7 +761,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                RK2Orden();
+                RK3Orden();
                 break;
             case 28:
                 screenP1.SetActive(false);
@@ -768,7 +770,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                RK3Orden();
+                RK4Orden();
                 break;
             case 29:
                 screenP1.SetActive(false);
@@ -777,7 +779,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                RK4Orden();
+                RK13Simpson();
                 break;
             case 30:
                 screenP1.SetActive(false);
@@ -786,18 +788,9 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                RK13Simpson();
-                break;
-            case 31:
-                screenP1.SetActive(false);
-                screenP2.SetActive(false);
-                screenP3.SetActive(false);
-                screenP4.SetActive(false);
-                screenP5.SetActive(false);
-                screenP6.SetActive(true);
                 RK38Simpson();
                 break;
-            case 32:
+            case 31:
                 screenP1.SetActive(false);
                 screenP2.SetActive(false);
                 screenP3.SetActive(false);
@@ -1436,14 +1429,42 @@ public class metodos_numericos : MonoBehaviour {
         Debug.Log("I: " + i.ToString("0.0000000"));
     }
 
-    private void EulerHaciaAtras() {
-        textoNombreMetodo.text = "Euler hacia atrás";
-        aplicaMetodo = true;
-    }
-
+    // "EULER HACIA ADELANTE"
     private void EulerHaciaAdelante() {
+
         textoNombreMetodo.text = "Euler hacia adelante";
         aplicaMetodo = true;
+
+        System.Random random = new System.Random();
+        float y0 = random.Next(1, 9), h = random.Next(1, 9), t0 = 0;
+        h = h / 10;
+
+        fieldY0P6.text = y0.ToString();
+        fieldT0P6.text = t0.ToString();
+
+        fieldT1P6.gameObject.SetActive(false);
+        fieldY1P6.gameObject.SetActive(false);
+        txtY1.SetActive(false);
+        txtT1.SetActive(false);
+
+        fieldHP6.text = h.ToString();
+        //Console.WriteLine($"y0 = {y0}, h = {h} y t0 = {t0}");
+        ecuacion3();// genera el arreglo de operadores
+        numsRandYT();// genera los numeros aleatorios de la ecuacion
+
+        yf = y0 + (h * ecuacionYT(y0, t0)); //originalmente la variable es y1
+        yf = Math.Round(yf, 8);
+        //double t1 = t0 + h;
+        //double y2 = y1 + (h * ecuacionYT(y1, t1));
+        //Console.WriteLine($"y1 = {y1} y y2 = {y2}");
+
+        // yf es la variable donde se guarda y1
+        // solo calculamos y1
+        Debug.Log("Y1: " + yf);
+        if (yf.Equals("Infinito")) {
+            aplicaMetodo = false;
+        }
+        //Debug.Log("Y2: " + y2.ToString("0.0000000"));
     }
 
     private void EulerModificado() {
@@ -1461,19 +1482,23 @@ public class metodos_numericos : MonoBehaviour {
         fieldY0P6.text = y0.ToString();
         fieldT0P6.text = t0.ToString();
 
+        fieldT1P6.gameObject.SetActive(true);
+        fieldY1P6.gameObject.SetActive(true);
+        txtY1.SetActive(true);
+        txtT1.SetActive(true);
         fieldT1P6.text = t1.ToString();
         fieldY1P6.text = y1.ToString();
 
         fieldHP6.text = h.ToString();
-        
 
         ecuacion1();
         ecuacion2();
         numsRandYYT();
 
         yf = y0 + ((h / 2) * (ecuacionYYT(y0, t0) + ecuacionYYT(y1, t1)));
+        yf = Math.Round(yf, 8);
 
-        Debug.Log(yf.ToString("0.0000000"));
+        Debug.Log("yf: "+yf);
     }
 
     private void RK2Orden() {
@@ -1585,7 +1610,7 @@ public class metodos_numericos : MonoBehaviour {
         }
     }
 
-    static void numsRandYT() {
+    void numsRandYT() {
         System.Random random = new System.Random();
         string ecu = "";
         _rnd = new List<int>();
@@ -1676,7 +1701,7 @@ public class metodos_numericos : MonoBehaviour {
                     break;
             }
         }
-        Debug.Log(ecu);
+        fieldEcuacionP6.text = ecu;
     }
 
     void numsRandYYT() {
@@ -1816,7 +1841,7 @@ public class metodos_numericos : MonoBehaviour {
         fieldEcuacionP6.text = ecu;
     }
 
-    static double ecuacionYT(double y, double t) {
+    static float ecuacionYT(double y, double t) {
         double yx = 0.0;
         int cc = _Ec3.Count;
         for (int i = 0; i < (cc); i++) {
@@ -1883,7 +1908,7 @@ public class metodos_numericos : MonoBehaviour {
                     break;
             }
         }
-        return yx;
+        return (float)yx;
     }
 
     static double ecuacionYYT(double y, double t) {

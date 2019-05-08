@@ -18469,7 +18469,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1218423014
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24823,6 +24823,8 @@ MonoBehaviour:
   fieldT1P6: {fileID: 2095411754}
   fieldY1AnsP6: {fileID: 1865860890}
   fieldY1AnsCPUP6: {fileID: 1516395672}
+  txtY1: {fileID: 734552560}
+  txtT1: {fileID: 207840899}
   p1IconGood: {fileID: 2029209124}
   p1IconBad: {fileID: 25182088}
   p2IconGood: {fileID: 1574481459}
