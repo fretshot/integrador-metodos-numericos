@@ -517,7 +517,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 25;
+        opcion = 26;
         switch (opcion) {
             case 1:
                 screenP1.SetActive(true);
@@ -1498,12 +1498,44 @@ public class metodos_numericos : MonoBehaviour {
         yf = y0 + ((h / 2) * (ecuacionYYT(y0, t0) + ecuacionYYT(y1, t1)));
         yf = Math.Round(yf, 8);
 
+        if (yf.Equals("Infinito")) {
+            aplicaMetodo = false;
+        }
+
         Debug.Log("yf: "+yf);
     }
 
     private void RK2Orden() {
         textoNombreMetodo.text = "Runge - Kutta 2° orden";
         aplicaMetodo = true;
+
+        System.Random random = new System.Random();
+        float y0 = random.Next(1, 10), h = random.Next(1, 10), t0 = 0;
+        h = h / 10;
+
+        fieldY0P6.text = y0.ToString();
+        fieldT0P6.text = t0.ToString();
+        fieldHP6.text = h.ToString();
+
+        fieldT1P6.gameObject.SetActive(false);
+        fieldY1P6.gameObject.SetActive(false);
+        txtY1.SetActive(false);
+        txtT1.SetActive(false);
+
+        //Console.WriteLine($"y0 = {y0}, h = {h} y t0 = {t0}");
+        ecuacion3();// genera el arreglo de operadores
+        numsRandYT();// genera los numeros aleatorios de la ecuacion
+
+        float k1 = h * ecuacionYT(y0, t0);
+        float k2 = h * ecuacionYT((y0 + k1), (t0 + h));
+        yf = y0 + ((k1 + k2) / 2); //yf era originalmente y1
+        yf = Math.Round(yf, 8);
+        //Console.WriteLine($"k1 = {k1}, k2 = {k2} y y1 = {y1}");
+        Debug.Log("yf: " + yf);
+
+        if (yf.Equals("Infinito")) {
+            aplicaMetodo = false;
+        }
     }
 
     private void RK3Orden() {
@@ -1841,7 +1873,7 @@ public class metodos_numericos : MonoBehaviour {
         fieldEcuacionP6.text = ecu;
     }
 
-    static float ecuacionYT(double y, double t) {
+    float ecuacionYT(double y, double t) {
         double yx = 0.0;
         int cc = _Ec3.Count;
         for (int i = 0; i < (cc); i++) {
@@ -1911,7 +1943,7 @@ public class metodos_numericos : MonoBehaviour {
         return (float)yx;
     }
 
-    static double ecuacionYYT(double y, double t) {
+    float ecuacionYYT(double y, double t) {
         double yx = 0.0;
         int cc = _Ec1.Count;
         for (int i = 0; i < (cc); i++) {
@@ -2011,7 +2043,7 @@ public class metodos_numericos : MonoBehaviour {
             }
         }
         yx = yx / yp;
-        return yx;
+        return (float)yx;
     }
 
 
