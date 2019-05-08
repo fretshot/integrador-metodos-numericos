@@ -20,7 +20,7 @@ public class metodos_numericos : MonoBehaviour {
 
     public TMP_InputField fieldEcuacionP5, fieldLimites, fieldN, fieldI, fieldICPU;
 
-    public TMP_InputField fieldEcuacionP6, fieldy0, fieldY0p, fieldH, fieldYp, fieldYpCPU;
+    public TMP_InputField fieldEcuacionP6, fieldY0P6, fieldT0P6, fieldHP6, fieldY1P6, fieldT1P6, fieldY1AnsP6, fieldY1AnsCPUP6;
 
     public GameObject p1IconGood;
     public GameObject p1IconBad;
@@ -63,7 +63,7 @@ public class metodos_numericos : MonoBehaviour {
 
     float i;
 
-    float Yp;
+    double yf;
 
     bool aplicaMetodo;
 
@@ -200,13 +200,13 @@ public class metodos_numericos : MonoBehaviour {
                 btnNoAplicaElMetodo.interactable = false;
 
                 if (aplicaMetodo == false) {
-                    fieldY0p.text = "No aplica el método";
+                    fieldY1AnsP6.text = "No aplica el método";
                     //Respuesta correcta
                     p6IconGood.SetActive(true);
                     Invoke("ganar", 3);
                 } else {
                     //Respuesta incorrecta
-                    fieldY0p.text = "No aplica el método";
+                    fieldY1AnsP6.text = "No aplica el método";
                     p6IconBad.SetActive(true);
                     Invoke("perder", 3);
                 }
@@ -280,8 +280,8 @@ public class metodos_numericos : MonoBehaviour {
 
             if (screenP6.activeSelf) {
 
-                fieldYpCPU.gameObject.SetActive(true);
-                fieldYpCPU.text = Yp.ToString("0.0000000");
+                fieldY1AnsCPUP6.gameObject.SetActive(true);
+                fieldY1AnsCPUP6.text = yf.ToString("0.0000000");
                 btnVerRespuesta.interactable = false;
                 btnRendirse.interactable = true;
                 btnValidar.interactable = false;
@@ -429,7 +429,7 @@ public class metodos_numericos : MonoBehaviour {
 
             if (screenP6.activeSelf) {
 
-                if (fieldYp.text.Contains(Yp.ToString())) {
+                if (fieldY1AnsP6.text.Contains(yf.ToString())) {
                     //Respuesta correcta
                     p6IconGood.SetActive(true);
                     btnVerRespuesta.interactable = false;
@@ -478,11 +478,13 @@ public class metodos_numericos : MonoBehaviour {
 
         p6IconGood.SetActive(false);
         p6IconBad.SetActive(false);
-        fieldYpCPU.gameObject.SetActive(false);
+        fieldY1AnsCPUP6.gameObject.SetActive(false);
         fieldEcuacionP6.text = "";
-        fieldy0.text = "";
-        fieldY0p.text = "";
-        fieldH.text = "";
+        fieldY0P6.text = "";
+        fieldT0P6.text = "";
+        fieldY1P6.text = "";
+        fieldT1P6.text = "";
+        fieldHP6.text = "";
 
         btnVerRespuesta.interactable = true;
         btnRendirse.interactable = true;
@@ -513,7 +515,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 19;
+        opcion = 26;
         switch (opcion) {
             case 1:
                 screenP1.SetActive(true);
@@ -1445,24 +1447,33 @@ public class metodos_numericos : MonoBehaviour {
     }
 
     private void EulerModificado() {
+
         textoNombreMetodo.text = "Euler modificado";
         aplicaMetodo = true;
+
         System.Random random = new System.Random();
         double t0 = 0, h = random.Next(1, 10), y0 = random.Next(11, 100), y1 = y0, t1 = (t0 + h);
-        fieldH.text = h.ToString();
-        fieldy0.text = y0.ToString();
-        
+
         h = h / 10;
         y0 = y0 / 10;
         y1 = y0;
-        //Console.WriteLine($"y0 = {y0}, y1 = {y1}, h = {h}, t0 = {t0} y t1 = {t1}");
-        Debug.Log($"y0 = {y0}, y1 = {y1}, h = {h}, t0 = {t0} y t1 = {t1}");
+
+        fieldY0P6.text = y0.ToString();
+        fieldT0P6.text = t0.ToString();
+
+        fieldT1P6.text = t1.ToString();
+        fieldY1P6.text = y1.ToString();
+
+        fieldHP6.text = h.ToString();
+        
+
         ecuacion1();
         ecuacion2();
         numsRandYYT();
-        double yf = y0 + ((h / 2) * (ecuacionYYT(y0, t0) + ecuacionYYT(y1, t1)));
-        //Console.WriteLine($"y1 = {yf}");
-        Debug.Log($"y1 = {yf}");
+
+        yf = y0 + ((h / 2) * (ecuacionYYT(y0, t0) + ecuacionYYT(y1, t1)));
+
+        Debug.Log(yf.ToString("0.0000000"));
     }
 
     private void RK2Orden() {
@@ -1668,7 +1679,7 @@ public class metodos_numericos : MonoBehaviour {
         Debug.Log(ecu);
     }
 
-    static void numsRandYYT() {
+    void numsRandYYT() {
         System.Random random = new System.Random();
         string ecu = "";
         _rnd = new List<int>();
@@ -1802,7 +1813,7 @@ public class metodos_numericos : MonoBehaviour {
             }
         }
         ecu = ecu + ecu2;
-        Debug.Log(ecu);
+        fieldEcuacionP6.text = ecu;
     }
 
     static double ecuacionYT(double y, double t) {
