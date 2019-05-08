@@ -517,7 +517,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 26;
+        opcion = 27;
         switch (opcion) {
             case 1:
                 screenP1.SetActive(true);
@@ -770,7 +770,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                RK4Orden();
+                RK13Simpson();
                 break;
             case 29:
                 screenP1.SetActive(false);
@@ -779,18 +779,9 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                RK13Simpson();
-                break;
-            case 30:
-                screenP1.SetActive(false);
-                screenP2.SetActive(false);
-                screenP3.SetActive(false);
-                screenP4.SetActive(false);
-                screenP5.SetActive(false);
-                screenP6.SetActive(true);
                 RK38Simpson();
                 break;
-            case 31:
+            case 30:
                 screenP1.SetActive(false);
                 screenP2.SetActive(false);
                 screenP3.SetActive(false);
@@ -1541,12 +1532,38 @@ public class metodos_numericos : MonoBehaviour {
     private void RK3Orden() {
         textoNombreMetodo.text = "Runge - Kutta 3° orden";
         aplicaMetodo = true;
-    }
 
+        System.Random random = new System.Random();
+        double y0 = random.Next(1, 10), h = random.Next(11, 100), t = 0;
+        h = h / 100;
+        //Console.WriteLine($"y0 = {y0}, h = {h} y t = {t}");
 
-    private void RK4Orden() {
-        textoNombreMetodo.text = "Runge - Kutta 4° orden";
-        aplicaMetodo = true;
+        fieldY0P6.text = y0.ToString();
+        fieldT0P6.text = t.ToString();
+        fieldHP6.text = h.ToString();
+
+        fieldT1P6.gameObject.SetActive(false);
+        fieldY1P6.gameObject.SetActive(false);
+        txtY1.SetActive(false);
+        txtT1.SetActive(false);
+
+        ecuacion1();
+        ecuacion2();
+        numsRandYYT();
+
+        double k1 = h * ecuacionYYT(y0, t);
+        double k2 = h * ecuacionYYT((y0 + (k1 / 2)), (t + (h / 2)));
+        double k3 = h * ecuacionYYT((y0 - k1 + (2 * k2)), (t + h));
+        yf = y0 + ((k1 + (4 * k2) + k3) / 6);
+        yf = Math.Round(yf, 8);
+
+        //Console.WriteLine($"k1 = {k1} \nk2 = {k2}\nk3 = {k3}\ny1 = {y1}");
+
+        if (yf.Equals("Infinito")) {
+            aplicaMetodo = false;
+        }
+
+        Debug.Log("yf: " + yf);
     }
 
     private void RK13Simpson() {
