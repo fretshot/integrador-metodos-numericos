@@ -1607,8 +1607,42 @@ public class metodos_numericos : MonoBehaviour {
     }
 
     private void RK38Simpson() {
+
         textoNombreMetodo.text = "Runge - Kutta 3/8 Simpson";
         aplicaMetodo = true;
+
+        System.Random random = new System.Random();
+        double y = random.Next(1, 10), h = random.Next(1, 10), t = 0;
+        h = h / 10;
+
+        //Console.WriteLine($"y = {y}, h = {h} y t = {t}");
+
+        fieldY0P6.text = y.ToString();
+        fieldT0P6.text = t.ToString();
+        fieldHP6.text = h.ToString();
+
+        fieldT1P6.gameObject.SetActive(false);
+        fieldY1P6.gameObject.SetActive(false);
+        txtY1.SetActive(false);
+        txtT1.SetActive(false);
+
+        ecuacion1();
+        ecuacion2();
+        numsRandYYT();
+        double k1 = h * ecuacionYYT(y, t);
+        double k2 = h * ecuacionYYT((y + (k1 / 3)), (t + (h / 3)));
+        double k3 = h * ecuacionYYT((y + (k1 / 3) + (k2 / 3)), (t + ((2 * h) / 3)));
+        double k4 = h * ecuacionYYT((y + k1 - k2 + k3), (t + h));
+
+        yf = y + ((k1 + (3 * k2) + (3 * k3) + k4) / 8);
+        yf = Math.Round(yf, 8);
+
+        //Console.WriteLine($"k1 = {k1} \nk2 = {k2}\nk3 = {k3}\nk4 = {k4}\ny1 = {y1}");
+        if (yf.Equals("Infinito") || yf.Equals("NaN")) {
+            aplicaMetodo = false;
+        }
+
+        Debug.Log("yf: " + yf);
     }
 
     private void RKOrdenSuperior() {
