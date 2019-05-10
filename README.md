@@ -1,3 +1,6 @@
 # Proyecto Integrador Métodos Numéricos
 
-# Variante del videojuego "Numbi" para la clase de métodos numéricos. Donde se incluyen todos los metodos vistos en clase...
+## Descripción 
+Variante del videojuego "Numbi", donde se incluyen todos los métodos vistos en clase.
+
+
