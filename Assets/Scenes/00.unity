@@ -556,7 +556,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -2238,8 +2238,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -87.5}
-  m_SizeDelta: {x: 462.4, y: 75}
+  m_AnchoredPosition: {x: 0, y: -76}
+  m_SizeDelta: {x: 462.4, y: 116.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &652315356
 MonoBehaviour:
@@ -2261,7 +2261,9 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: "uanl - fime\noscar G. Alem\xE1n Castillo     1662539"
+  m_text: "uanl - fime\nOscar G. Alem\xE1n Castillo     1662539\nIvan E. Rodriguez
+    Saltijeral  1838125\nMichael D. Bateman P\xE9rez    1889405\nAbraham Quintero
+    Mu\xF1oz      1618506"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b53b97848d6e70046ba85c291ec708aa, type: 2}
   m_sharedMaterial: {fileID: 21569082702566242, guid: b53b97848d6e70046ba85c291ec708aa,
@@ -2290,8 +2292,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 30.27
-  m_fontSizeBase: 30.27
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2331,15 +2333,15 @@ MonoBehaviour:
   m_margin: {x: 0.5965096, y: 0, z: 0.19324012, w: -0.7943502}
   m_textInfo:
     textComponent: {fileID: 0}
-    characterCount: 48
+    characterCount: 158
     spriteCount: 0
-    spaceCount: 11
-    wordCount: 8
+    spaceCount: 34
+    wordCount: 22
     linkCount: 0
-    lineCount: 2
+    lineCount: 5
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -2736,8 +2738,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -15, y: 8}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -0.000019073, y: 8}
+  m_SizeDelta: {x: 462.4, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &907728293
 MonoBehaviour:
@@ -2759,7 +2761,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: "Proyecto Integrador m\xE9todos num\xE9rcos"
+  m_text: "Proyecto Integrador M\xE9todos Num\xE9ricos"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b53b97848d6e70046ba85c291ec708aa, type: 2}
   m_sharedMaterial: {fileID: 21569082702566242, guid: b53b97848d6e70046ba85c291ec708aa,
@@ -2788,8 +2790,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 30.27
-  m_fontSizeBase: 30.27
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2826,18 +2828,18 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -7.7522693, y: 0, z: -40.410667, w: -25.840816}
+  m_margin: {x: 0.3762829, y: 0, z: 0.23212484, w: 0.5769791}
   m_textInfo:
     textComponent: {fileID: 0}
-    characterCount: 36
+    characterCount: 37
     spriteCount: 0
     spaceCount: 3
     wordCount: 4
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -4439,7 +4441,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}

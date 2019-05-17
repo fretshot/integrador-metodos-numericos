@@ -10,6 +10,8 @@ public class metodos_numericos : MonoBehaviour {
     public TextMeshProUGUI textoCronometro;
     public TextMeshProUGUI textoNombreMetodo;
 
+    public Text UIAns;
+
     public TMP_InputField FieldX, fieldX1, fieldX2, fieldX3, fieldX4, fieldY1, fieldY2, fieldY3, fieldY4, fieldGx, fieldGxCPU;
     public TMP_InputField fieldXi, fieldXiCPU, fieldEcuacion;
     public TMP_InputField fieldX, fieldY, fieldZ, fieldXCPU, fieldYCPU, fieldZCPU;
@@ -49,7 +51,7 @@ public class metodos_numericos : MonoBehaviour {
     public Button btnNoAplicaElMetodo;
 
     float x, x1, x2, x3, x4, y1, y2, y3, y4;
-    float startingTime = 180f;
+    float startingTime = 360;
     float currentTime;
 
     float gx;
@@ -511,13 +513,17 @@ public class metodos_numericos : MonoBehaviour {
 
         fieldY1AnsP6.text = "";
 
+        UIAns.gameObject.SetActive(false);
+        UIAns.text = "";
+
         currentTime = startingTime;
 
         inicializarDatos();
 
-        //opcion = UnityEngine.Random.Range(1, 5); // No incluye el  5, el rango es de 1 a 4
+        opcion = UnityEngine.Random.Range(1, 30); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 29;
+        //opcion = 9;
+
         switch (opcion) {
             case 1:
                 screenP1.SetActive(true);
@@ -796,6 +802,16 @@ public class metodos_numericos : MonoBehaviour {
 
     void Update(){
         stopwatch();
+
+        if (Input.GetKeyDown(KeyCode.F12)) {
+            if (!UIAns.isActiveAndEnabled) {
+                UIAns.gameObject.SetActive(true);
+            } else {
+                UIAns.gameObject.SetActive(false);
+            }
+            
+        }
+
     }
 
     void stopwatch() {
@@ -908,9 +924,10 @@ public class metodos_numericos : MonoBehaviour {
         float d3_1 = (d2_2 - d2_1);
 
         gx = (yi[0] * s0) + (d1_1 * s1) + (d2_1 * s2) + (d3_1 * s3);
+        gx = (float)Math.Round(gx, 8);
 
         Debug.Log("Newton hacia adelante: g(x) = "+gx);
-
+        UIAns.text = gx.ToString();
     }
 
     // NEWTON HACIA ATRAS
@@ -952,8 +969,10 @@ public class metodos_numericos : MonoBehaviour {
         float d3_1 = (d2_2 - d2_1);
 
         gx = yi[3] * s0 + (d1_3 * s1) + (d2_2 * s2) + (d3_1 * s3);
+        gx = (float)Math.Round(gx, 8);
 
         Debug.Log("Newton hacia atrás: g(x) = " + gx);
+        UIAns.text = gx.ToString();
     }
 
     // NEWTON DIFERENCIAS DIVIDIDAS
@@ -978,8 +997,9 @@ public class metodos_numericos : MonoBehaviour {
         float d3_1 = (d2_2 - d2_1) / (xi[3] - xi[0]);
 
         gx = yi[0] + (d1_1 * (x - xi[0])) + (d2_1 * (x - xi[0]) * (x - xi[1])) + (d3_1 * (x - xi[0]) * (x - xi[1]) * (x - xi[2]));
-
-        Debug.Log("Newton hacia atrás: g(x) = " + gx);
+        gx = (float)Math.Round(gx, 8);
+        Debug.Log("Newton diferencias divididas: g(x) = " + gx);
+        UIAns.text = gx.ToString();
     }
 
     // LAGRANGE
@@ -997,8 +1017,9 @@ public class metodos_numericos : MonoBehaviour {
         float d = (yi[3] * (x - xi[0]) * (x - xi[1]) * (x - xi[2])) / ((xi[3] - xi[0]) * (xi[3] - xi[1]) * (xi[3] - xi[2]));
 
         gx = a + b + c + d;
-
+        gx = (float)Math.Round(gx, 8);
         Debug.Log("Lagrange: g(x) = "+gx);
+        UIAns.text = gx.ToString();
     }
 
     //PUNTO FIJO
@@ -1018,13 +1039,15 @@ public class metodos_numericos : MonoBehaviour {
 
             e = Math.Abs(xi - tmp);
 
-            tmp = xi;
-
+           
+            xi = (float)Math.Round(xi, 8);
 
             if (e.ToString("0.0000000").StartsWith("0.00000")) {
-                Debug.Log("xi: " + xi.ToString("0.0000000"));
+                Debug.Log("xi: " + xi);
+                UIAns.text = xi.ToString();
                 break;
             }
+            tmp = xi;
         }
 
     }
@@ -1048,14 +1071,15 @@ public class metodos_numericos : MonoBehaviour {
 
             e = Math.Abs(xi - tmp);
 
-            
+            xi = (float)Math.Round(xi, 8);
 
-            tmp = xi;
 
             if (e.ToString("0.0000000").StartsWith("0.00000")) {
-                Debug.Log("xi: " + xi.ToString("0.0000000"));
+                Debug.Log("xi: " + xi);
+                UIAns.text = xi.ToString();
                 break;
             }
+            tmp = xi;
         }
     }
 
@@ -1087,12 +1111,16 @@ public class metodos_numericos : MonoBehaviour {
 
             e = Math.Abs(xi - tmp);
 
-            tmp = xi;
+            xi = (float)Math.Round(xi, 8);
+
+            
 
             if (e.ToString("0.0000000").StartsWith("0.000")) {
-                Debug.Log("xi: " + xi.ToString("0.0000000"));
+                Debug.Log("xi: " + xi);
+                UIAns.text = xi.ToString();
                 break;
             }
+            tmp = xi;
         }
 
     }
@@ -1123,16 +1151,21 @@ public class metodos_numericos : MonoBehaviour {
             temp2 = xi;
             ftemp2 = fxi;
 
+            xi = (float)Math.Round(xi, 8);
+
             if (e.ToString("0.0000000").StartsWith("0.000")) {
-                Debug.Log("xi: " + xi.ToString("0.0000000"));
+                Debug.Log("xi: " + xi);
+                UIAns.text = xi.ToString();
                 break;
             }
         }
     }
 
     private void montante() {
+
         textoNombreMetodo.text = "Montante";
         aplicaMetodo = true;
+
     }
 
     private void gaussJordan() {
@@ -1169,11 +1202,16 @@ public class metodos_numericos : MonoBehaviour {
             y = yi;
             z = zi;
 
+            x = (float)Math.Round(x, 8);
+            y = (float)Math.Round(y, 8);
+            z = (float)Math.Round(z, 8);
+
             if (ey.ToString("0.0000000").StartsWith("0.000")) {
                 rx = x;
                 ry = y;
                 rz = z;
-                Debug.Log("\txi: " + rx.ToString("0.0000000") + "\tyi: " + ry.ToString("0.0000000") + "\tzi: " + rz.ToString("0.0000000"));
+                Debug.Log("\txi: " + rx + "\tyi: " + ry + "\tzi: " + rz);
+                UIAns.text = "\txi: " + rx + "\tyi: " + ry + "\tzi: " + rz;
                 break;
             }
         }
@@ -1203,11 +1241,16 @@ public class metodos_numericos : MonoBehaviour {
             y = yi;
             z = zi;
 
+            x = (float)Math.Round(x, 8);
+            y = (float)Math.Round(y, 8);
+            z = (float)Math.Round(z, 8);
+
             if (ex.ToString("0.0000000").StartsWith("0.001")) {
                 rx = x;
                 ry = y;
                 rz = z;
-                Debug.Log("\txi: " + rx.ToString("0.0000000")+ "\tyi: " + ry.ToString("0.0000000")+ "\tzi: " + rz.ToString("0.0000000"));
+                Debug.Log("\txi: " + rx+ "\tyi: " + ry+ "\tzi: " + rz);
+                UIAns.text = "\txi: " + rx + "\tyi: " + ry + "\tzi: " + rz;
                 break;
 
             }
@@ -1247,10 +1290,17 @@ public class metodos_numericos : MonoBehaviour {
         gx3 = a0 + a1 * x3;
         gx4 = a0 + a1 * x4;
 
-        Debug.Log("gx1: " + gx1.ToString("0.0000000"));
-        Debug.Log("gx2: " + gx2.ToString("0.0000000"));
-        Debug.Log("gx3: " + gx3.ToString("0.0000000"));
-        Debug.Log("gx4: " + gx4.ToString("0.0000000"));
+        gx1 = (float)Math.Round(gx1, 8);
+        gx2 = (float)Math.Round(gx2, 8);
+        gx3 = (float)Math.Round(gx3, 8);
+        gx4 = (float)Math.Round(gx4, 8);
+
+
+        Debug.Log("gx1: " + gx1);
+        Debug.Log("gx2: " + gx2);
+        Debug.Log("gx3: " + gx3);
+        Debug.Log("gx4: " + gx4);
+        UIAns.text = "gx1: " + gx1.ToString() + " gx2: " + gx2.ToString() + " gx3: " + gx3.ToString() + " gx4: " + gx4.ToString();
     }
 
     private void cuadratica() {
@@ -1296,7 +1346,10 @@ public class metodos_numericos : MonoBehaviour {
 
         i = (h / 2) * (A + B + C + D + E);
 
-        Debug.Log("I: " + i.ToString("0.0000000"));
+        i = (float)Math.Round(i, 8);
+
+        Debug.Log("I: " + i);
+        UIAns.text = i.ToString();
     }
 
     // "1/3 DE SIPMPSON"
@@ -1328,7 +1381,9 @@ public class metodos_numericos : MonoBehaviour {
         }
         i = (integral3(a) + res + integral3(b));
         i = (h / 3) * (integral3(a) + res + integral3(b));
-        Debug.Log("I: " + i.ToString("0.0000000"));
+        i = (float)Math.Round(i, 8);
+        Debug.Log("I: " + i);
+        UIAns.text = i.ToString();
     }
 
     // 3/8 DE SIMPSON
@@ -1353,7 +1408,9 @@ public class metodos_numericos : MonoBehaviour {
         }
         i = (integral3(a) + (3 * res) + integral3(b));
         i = ((3 * h) / 8) * (integral3(a) + (3 * res) + integral3(b));
-        Debug.Log("I: " + i.ToString("0.0000000"));
+        i = (float)Math.Round(i, 8);
+        UIAns.text = i.ToString();
+        Debug.Log("I: " + i);
     }
 
     // NEWTON COTES CERRADAS
@@ -1367,7 +1424,7 @@ public class metodos_numericos : MonoBehaviour {
         fieldEcuacionP5.text = ecuacion;
         fieldLimites.text = "de "+a.ToString()+" a "+b.ToString();
         fieldN.text = n.ToString();
-        fieldEcuacionP5.text = "Por definir en codigo";
+        fieldEcuacionP5.text = ecuacion;
 
         float h = (b - a) / (n);
         float A = 0.04444444444f; // 2 / 45;Constante de Cotes cerradas cuando n=4
@@ -1379,8 +1436,9 @@ public class metodos_numericos : MonoBehaviour {
         float u = (7) * (3 * (2 * 2 * 2) - 10);
 
         i = (A * h) * (q + z + x + y + u);
-
-        Debug.Log("I: " + i.ToString("0.0000000"));
+        i = (float)Math.Round(i, 8);
+        Debug.Log("I: " + i);
+        UIAns.text = i.ToString();
     }
 
     // NEWTON COTES ABIERTAS
@@ -1396,7 +1454,7 @@ public class metodos_numericos : MonoBehaviour {
         fieldEcuacionP5.text = ecuacion;
         fieldLimites.text = "de " + a.ToString() + " a " + b.ToString();
         fieldN.text = n.ToString();
-        fieldEcuacionP5.text = "Por definir en codigo";
+        fieldEcuacionP5.text = ecuacion;
 
         float numero1 = -1.333333333f;//-4/3
         float cubo1 = (float)Math.Pow(numero1, 3);
@@ -1416,8 +1474,9 @@ public class metodos_numericos : MonoBehaviour {
         float p = (0) * (3 * (2 * 2 * 2) - 10);
 
         double i = (A * h) * (q + z + x + y + u + o + p);
-
-        Debug.Log("I: " + i.ToString("0.0000000"));
+        i = (float)Math.Round(i, 8);
+        Debug.Log("I: " + i);
+        UIAns.text = i.ToString();
     }
 
     // "EULER HACIA ADELANTE"
@@ -1456,6 +1515,7 @@ public class metodos_numericos : MonoBehaviour {
             aplicaMetodo = false;
         }
         //Debug.Log("Y2: " + y2.ToString("0.0000000"));
+        UIAns.text = yf.ToString();
     }
 
     private void EulerModificado() {
@@ -1494,6 +1554,7 @@ public class metodos_numericos : MonoBehaviour {
         }
 
         Debug.Log("yf: "+yf);
+        UIAns.text = yf.ToString();
     }
 
     private void RK2Orden() {
@@ -1527,6 +1588,7 @@ public class metodos_numericos : MonoBehaviour {
         if (yf.Equals("Infinito")) {
             aplicaMetodo = false;
         }
+        UIAns.text = yf.ToString();
     }
 
     private void RK3Orden() {
@@ -1562,7 +1624,7 @@ public class metodos_numericos : MonoBehaviour {
         if (yf.Equals("Infinito")) {
             aplicaMetodo = false;
         }
-
+        UIAns.text = yf.ToString();
         Debug.Log("yf: " + yf);
     }
 
@@ -1602,7 +1664,7 @@ public class metodos_numericos : MonoBehaviour {
         if (yf.Equals("Infinito")) {
             aplicaMetodo = false;
         }
-
+        UIAns.text = yf.ToString();
         Debug.Log("yf: " + yf);
     }
 
@@ -1641,7 +1703,7 @@ public class metodos_numericos : MonoBehaviour {
         if (yf.Equals("Infinito") || yf.Equals("NaN")) {
             aplicaMetodo = false;
         }
-
+        UIAns.text = yf.ToString();
         Debug.Log("yf: " + yf);
     }
 
