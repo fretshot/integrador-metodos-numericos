@@ -15,6 +15,7 @@ public class metodos_numericos : MonoBehaviour {
     public TMP_InputField FieldX, fieldX1, fieldX2, fieldX3, fieldX4, fieldY1, fieldY2, fieldY3, fieldY4, fieldGx, fieldGxCPU;
     public TMP_InputField fieldXi, fieldXiCPU, fieldEcuacion;
     public TMP_InputField fieldX, fieldY, fieldZ, fieldXCPU, fieldYCPU, fieldZCPU;
+    public TMP_InputField fieldEcu1, fieldEcu2, fieldEcu3;
 
     public TMP_InputField FieldEcuacion, fieldXi1, fieldXi2, fieldXi3, fieldXi4, fieldYi1, fieldYi2, fieldYi3, fieldYi4;
     public TMP_InputField fieldGx1, fieldGx2, fieldGx3, fieldGx4;
@@ -225,7 +226,7 @@ public class metodos_numericos : MonoBehaviour {
             if (screenP1.activeSelf) {
 
                 fieldGxCPU.gameObject.SetActive(true);
-                fieldGxCPU.text = gx.ToString("0.0000000");
+                fieldGxCPU.text = gx.ToString();
                 btnVerRespuesta.interactable = false;
                 btnRendirse.interactable = true;
                 btnValidar.interactable = false;
@@ -235,7 +236,7 @@ public class metodos_numericos : MonoBehaviour {
             if (screenP2.activeSelf) {
 
                 fieldXiCPU.gameObject.SetActive(true);
-                fieldXiCPU.text = rx.ToString("0.0000000");
+                fieldXiCPU.text = xi.ToString();
                 btnVerRespuesta.interactable = false;
                 btnRendirse.interactable = true;
                 btnValidar.interactable = false;
@@ -246,9 +247,9 @@ public class metodos_numericos : MonoBehaviour {
                 fieldXCPU.gameObject.SetActive(true);
                 fieldYCPU.gameObject.SetActive(true);
                 fieldZCPU.gameObject.SetActive(true);
-                fieldXCPU.text = rx.ToString("0.0000000");
-                fieldYCPU.text = ry.ToString("0.0000000");
-                fieldZCPU.text = rz.ToString("0.0000000");
+                fieldXCPU.text = "x = "+ rx.ToString();
+                fieldYCPU.text = "y = " + ry.ToString();
+                fieldZCPU.text = "z = " + rz.ToString();
                 btnVerRespuesta.interactable = false;
                 btnRendirse.interactable = true;
                 btnValidar.interactable = false;
@@ -465,6 +466,10 @@ public class metodos_numericos : MonoBehaviour {
         p3IconGood.SetActive(false);
         p3IconBad.SetActive(false);
 
+        fieldEcu1.text = "";
+        fieldEcu2.text = "";
+        fieldEcu3.text = "";
+
         p4IconGood.SetActive(false);
         p4IconBad.SetActive(false);
         fieldXCPU.gameObject.SetActive(false);
@@ -520,9 +525,9 @@ public class metodos_numericos : MonoBehaviour {
 
         inicializarDatos();
 
-        opcion = UnityEngine.Random.Range(1, 30); // No incluye el  5, el rango es de 1 a 4
+        //opcion = UnityEngine.Random.Range(1, 30); // No incluye el  5, el rango es de 1 a 4
 
-        //opcion = 9;
+        opcion = 10;
 
         switch (opcion) {
             case 1:
@@ -1031,14 +1036,17 @@ public class metodos_numericos : MonoBehaviour {
         float tmp = 0;
         float e = 0;
 
+        System.Random random = new System.Random();
+        int a = random.Next(1,6);
+        int b = random.Next(1,6);
+
+        fieldEcuacion.text = "x = ( " + a + "x^2 - " + b + " ) / 6";
+
         while (true) {
 
-            xi = (2 * (float)Math.Pow(tmp, 2) - 2) / 6;
-
-            fieldEcuacion.text = "x = ( "+2+"x^2 - "+2+" ) / "+6+"";
+            xi = (a * (float)Math.Pow(tmp, 2) - b) / 6;
 
             e = Math.Abs(xi - tmp);
-
            
             xi = (float)Math.Round(xi, 8);
 
@@ -1059,7 +1067,8 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Newton - Raphson";
         aplicaMetodo = true;
 
-        float xi = 0;
+        fieldEcuacion.text = "f(x) = e^3x - 4";
+
         float tmp = 1;
         float e = 0;
 
@@ -1067,15 +1076,12 @@ public class metodos_numericos : MonoBehaviour {
 
             xi = tmp - ((float)(Math.Exp(3 * tmp)) - 4) / (3 * (float)Math.Exp(3 * tmp)); // e^3x - 4
 
-            fieldEcuacion.text = "f(x) = e^3x -4";
-
             e = Math.Abs(xi - tmp);
 
             xi = (float)Math.Round(xi, 8);
 
-
             if (e.ToString("0.0000000").StartsWith("0.00000")) {
-                Debug.Log("xi: " + xi);
+                Debug.Log("NR xi: " + xi);
                 UIAns.text = xi.ToString();
                 break;
             }
@@ -1098,6 +1104,8 @@ public class metodos_numericos : MonoBehaviour {
         float fb = 16;
         float fa = -3;
 
+        fieldEcuacion.text = "f(x) = e^3x - 4";
+
         while (true) {
 
             a = xi;
@@ -1107,13 +1115,9 @@ public class metodos_numericos : MonoBehaviour {
             fa = (float)(Math.Exp(3 * a)) - 4; // Para e^3x - 4
             xi = a - ((fa * (b - a)) / (fb - fa));
 
-            fieldEcuacion.text = "f(x) = e^3x - 4";
-
             e = Math.Abs(xi - tmp);
 
             xi = (float)Math.Round(xi, 8);
-
-            
 
             if (e.ToString("0.0000000").StartsWith("0.000")) {
                 Debug.Log("xi: " + xi);
@@ -1169,8 +1173,38 @@ public class metodos_numericos : MonoBehaviour {
     }
 
     private void gaussJordan() {
+
         textoNombreMetodo.text = "Gass - Jordan";
         aplicaMetodo = true;
+
+        System.Random random = new System.Random();
+        int random1 = UnityEngine.Random.Range(3, 6);
+        int random2 = UnityEngine.Random.Range(3, 7);
+        int random3 = UnityEngine.Random.Range(3, 8);
+
+        string ec1 = random1+ "x -2y +2z = 1";
+        string ec2 = random2 + "x +2y +2z = 2";
+        string ec3 = random3 + "x -3b +3c = 3";
+
+        fieldEcu1.text = ec1;
+        fieldEcu2.text = ec2;
+        fieldEcu3.text = ec3;
+
+        int N_ec = 3;
+
+        double[,] a = {
+                {random1, -2, 2, 1},
+                {random2, 2, 2, 2 },
+                {random3, -3, 3 , 3}
+            };
+
+        double[] r = new double[N_ec];
+
+        //ShowMatrix(a, "Sistema de ecuaciones");
+        if (LinearEquationsSolver.GaussianElimination(a, r))
+            ShowSolution(r);
+        else
+            Debug.Log("No es un sistema de ecuaciones lineales");
     }
 
     private void eliminacionGaussiana() {
@@ -2204,5 +2238,91 @@ public class metodos_numericos : MonoBehaviour {
         return y;
     }
 
+    #region formated output 
+    static void ShowMatrix(double[,] a, string Title) {
+        Console.WriteLine(Title + '\n');
+        for (int i = 0; i <= a.GetUpperBound(0); i++) {
+            Console.Write('|');
+            for (int j = 0; j <= a.GetUpperBound(1); j++) {
+                Console.Write(ToStringSign(a[i, j]));
+            }
+            Console.Write(" | \n");
+        }
+        Console.WriteLine('\n');
+    }
+
+    void ShowSolution(double[] r) {
+        //Console.WriteLine("Solucion por Eliminacion Gaussiana\n");
+        for (int i = 0; i <= r.GetUpperBound(0); i++) {
+            //Debug.Log(string.Format("X({0}) = {1} \n", i + 1, r[i]));
+        }
+
+        rx = (float)r[0];
+        ry = (float)r[1];
+        rz = (float)r[2];
+
+        rx = (float)Math.Round(rx, 8);
+        ry = (float)Math.Round(ry, 8);
+        rz = (float)Math.Round(rz, 8);
+
+        Debug.Log("x: "+r[0]+" y: "+r[1]+" z: "+r[2]);
+        UIAns.text = "x: "+r[0]+" y: "+r[1]+" z: "+r[2];
+    }
+    static private string ToStringSign(double v) {
+        if (v < 0) return ' ' + v.ToString(); else return "  " + v.ToString();
+    }
+    #endregion
+
 
 }
+
+
+    class LinearEquationsSolver {
+        /// <summary> 
+        /// GaussianElimination() 
+        /// Gaussian elimination is a method for solving matrix equations 
+        /// By Harvey Triana 
+        /// </summary> 
+        /// <param name="a"> The matrix</param> 
+        /// <param name="r"> The solution array</param> 
+        /// <returns>Success function</returns> 
+        public static bool GaussianElimination(double[,] a, double[] r) {
+            double t, s;
+            int i, l, j, k, m, n;
+
+            try {
+                n = r.Length - 1;
+                m = n + 1;
+                for (l = 0; l <= n - 1; l++) {
+                    j = l;
+                    for (k = l + 1; k <= n; k++) {
+                        if (!(Math.Abs(a[j, l]) >= Math.Abs(a[k, l]))) j = k;
+                    }
+                    if (!(j == l)) {
+                        for (i = 0; i <= m; i++) {
+                            t = a[l, i];
+                            a[l, i] = a[j, i];
+                            a[j, i] = t;
+                        }
+                    }
+                    for (j = l + 1; j <= n; j++) {
+                        t = (a[j, l] / a[l, l]);
+                        for (i = 0; i <= m; i++) a[j, i] -= t * a[l, i];
+                    }
+                }
+                r[n] = a[n, m] / a[n, n];
+                for (i = 0; i <= n - 1; i++) {
+                    j = n - i - 1;
+                    s = 0;
+                    for (l = 0; l <= i; l++) {
+                        k = j + l + 1;
+                        s += a[j, k] * r[k];
+                    }
+                    r[j] = ((a[j, m] - s) / a[j, j]);
+                }
+                return true;
+            } catch {
+                return false;
+            }
+        }
+    }
