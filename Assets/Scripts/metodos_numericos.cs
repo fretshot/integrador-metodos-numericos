@@ -17,9 +17,9 @@ public class metodos_numericos : MonoBehaviour {
     public TMP_InputField fieldX, fieldY, fieldZ, fieldXCPU, fieldYCPU, fieldZCPU;
     public TMP_InputField fieldEcu1, fieldEcu2, fieldEcu3;
 
-    public TMP_InputField FieldEcuacion, fieldXi1, fieldXi2, fieldXi3, fieldXi4, fieldYi1, fieldYi2, fieldYi3, fieldYi4;
-    public TMP_InputField fieldGx1, fieldGx2, fieldGx3, fieldGx4;
-    public TMP_InputField fieldGx1CPU, fieldGx2CPU, fieldGx3CPU, fieldGx4CPU;
+    public TMP_InputField FieldEcuacion, fieldXi1, fieldXi2, fieldXi3, fieldXi4, fieldXi5, fieldXi6, fieldYi1, fieldYi2, fieldYi3, fieldYi4, fieldYi5, fieldYi6;
+    public TMP_InputField fieldGx1, fieldGx2, fieldGx3, fieldGx4, fieldGx5, fieldGx6;
+    public TMP_InputField fieldGx1CPU, fieldGx2CPU, fieldGx3CPU, fieldGx4CPU, fieldGx5CPU, fieldGx6CPU;
 
     public TMP_InputField fieldEcuacionP5, fieldLimites, fieldN, fieldI, fieldICPU;
 
@@ -52,12 +52,12 @@ public class metodos_numericos : MonoBehaviour {
     public Button btnNoAplicaElMetodo;
 
     float x, x1, x2, x3, x4, y1, y2, y3, y4;
-    float startingTime = 360;
+    float startingTime = 720;
     float currentTime;
 
     float gx;
 
-    float gx1, gx2, gx3, gx4;
+    float gx1, gx2, gx3, gx4,gx5,gx6;
 
     float xi;
 
@@ -161,6 +161,8 @@ public class metodos_numericos : MonoBehaviour {
                     fieldGx2.text = "No aplica el método";
                     fieldGx3.text = "No aplica el método";
                     fieldGx4.text = "No aplica el método";
+                    fieldGx5.text = "No aplica el método";
+                    fieldGx6.text = "No aplica el método";
                     p4IconGood.SetActive(true);
                     Invoke("ganar", 3);
                 } else {
@@ -169,6 +171,8 @@ public class metodos_numericos : MonoBehaviour {
                     fieldGx2.text = "No aplica el método";
                     fieldGx3.text = "No aplica el método";
                     fieldGx4.text = "No aplica el método";
+                    fieldGx5.text = "No aplica el método";
+                    fieldGx6.text = "No aplica el método";
                     p4IconBad.SetActive(true);
                     Invoke("perder", 3);
                 }
@@ -262,10 +266,14 @@ public class metodos_numericos : MonoBehaviour {
                 fieldGx2CPU.gameObject.SetActive(true);
                 fieldGx3CPU.gameObject.SetActive(true);
                 fieldGx4CPU.gameObject.SetActive(true);
+                fieldGx5CPU.gameObject.SetActive(true);
+                fieldGx6CPU.gameObject.SetActive(true);
                 fieldGx1CPU.text = gx1.ToString("0.0000000");
                 fieldGx2CPU.text = gx2.ToString("0.0000000");
                 fieldGx3CPU.text = gx3.ToString("0.0000000");
                 fieldGx4CPU.text = gx4.ToString("0.0000000");
+                fieldGx5CPU.text = gx5.ToString("0.0000000");
+                fieldGx6CPU.text = gx6.ToString("0.0000000");
                 btnVerRespuesta.interactable = false;
                 btnRendirse.interactable = true;
                 btnValidar.interactable = false;
@@ -503,11 +511,29 @@ public class metodos_numericos : MonoBehaviour {
         fieldGx2CPU.gameObject.SetActive(false);
         fieldGx3CPU.gameObject.SetActive(false);
         fieldGx4CPU.gameObject.SetActive(false);
+        fieldGx5CPU.gameObject.SetActive(false);
+        fieldGx6CPU.gameObject.SetActive(false);
 
         fieldGx1.text = "";
         fieldGx2.text = "";
         fieldGx3.text = "";
         fieldGx4.text = "";
+        fieldGx5.text = "";
+        fieldGx6.text = "";
+
+        fieldXi1.text = "";
+        fieldXi2.text = "";
+        fieldXi3.text = "";
+        fieldXi4.text = "";
+        fieldXi5.text = "";
+        fieldXi6.text = "";
+
+        fieldYi1.text = "";
+        fieldYi2.text = "";
+        fieldYi3.text = "";
+        fieldYi4.text = "";
+        fieldYi5.text = "";
+        fieldYi6.text = "";
 
         fieldGx.text = "";
         fieldXi.text = "";
@@ -527,7 +553,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 30); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 10;
+        opcion = 16;
 
         switch (opcion) {
             case 1:
@@ -1170,6 +1196,35 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Montante";
         aplicaMetodo = true;
 
+        int random1 = UnityEngine.Random.Range(3, 6);
+        int random2 = UnityEngine.Random.Range(3, 7);
+        int random3 = UnityEngine.Random.Range(3, 8);
+
+        string ec1 = random1 + "x -2y +2z = 1";
+        string ec2 = random2 + "x +2y +2z = 2";
+        string ec3 = random3 + "x -3b +3c = 3";
+
+        fieldEcu1.text = ec1;
+        fieldEcu2.text = ec2;
+        fieldEcu3.text = ec3;
+
+        int N_ec = 3;
+
+        double[,] a = {
+                {random1, -2, 2, 1},
+                {random2, 2, 2, 2 },
+                {random3, -3, 3 , 3}
+            };
+
+        double[] r = new double[N_ec];
+
+        //ShowMatrix(a, "Sistema de ecuaciones");
+        if (LinearEquationsSolver.GaussianElimination(a, r)) {
+            ShowSolution(r);
+        }else {
+            Debug.Log("No es un sistema de ecuaciones lineales");
+            aplicaMetodo = false;
+        }
     }
 
     private void gaussJordan() {
@@ -1177,7 +1232,6 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Gass - Jordan";
         aplicaMetodo = true;
 
-        System.Random random = new System.Random();
         int random1 = UnityEngine.Random.Range(3, 6);
         int random2 = UnityEngine.Random.Range(3, 7);
         int random3 = UnityEngine.Random.Range(3, 8);
@@ -1201,15 +1255,48 @@ public class metodos_numericos : MonoBehaviour {
         double[] r = new double[N_ec];
 
         //ShowMatrix(a, "Sistema de ecuaciones");
-        if (LinearEquationsSolver.GaussianElimination(a, r))
+        if (LinearEquationsSolver.GaussianElimination(a, r)) {
             ShowSolution(r);
-        else
+        } else {
             Debug.Log("No es un sistema de ecuaciones lineales");
+            aplicaMetodo = false;
+        }
     }
 
     private void eliminacionGaussiana() {
         textoNombreMetodo.text = "Eliminación Gaussiana";
         aplicaMetodo = true;
+
+
+        int random1 = UnityEngine.Random.Range(3, 6);
+        int random2 = UnityEngine.Random.Range(3, 7);
+        int random3 = UnityEngine.Random.Range(3, 8);
+
+        string ec1 = random1 + "x -2y +2z = 1";
+        string ec2 = random2 + "x +2y +2z = 2";
+        string ec3 = random3 + "x -3b +3c = 3";
+
+        fieldEcu1.text = ec1;
+        fieldEcu2.text = ec2;
+        fieldEcu3.text = ec3;
+
+        int N_ec = 3;
+
+        double[,] a = {
+                {random1, -2, 2, 1},
+                {random2, 2, 2, 2 },
+                {random3, -3, 3 , 3}
+            };
+
+        double[] r = new double[N_ec];
+
+        //ShowMatrix(a, "Sistema de ecuaciones");
+        if (LinearEquationsSolver.GaussianElimination(a, r)) {
+            ShowSolution(r);
+        } else {
+            Debug.Log("No es un sistema de ecuaciones lineales");
+            aplicaMetodo = false;
+        }
     }
 
     // GAUSS - SEIDEL
@@ -1217,6 +1304,15 @@ public class metodos_numericos : MonoBehaviour {
 
         textoNombreMetodo.text = "Gauss - Seidel";
         aplicaMetodo = true;
+
+
+        string ec1 = "3x - 0.1y - 0.2z = 7.85";
+        string ec2 = "0.1x + 7y - 0.3z = -19.3";
+        string ec3 = "0.3x - 0.2y + 10z = 71.4";
+
+        fieldEcu1.text = ec1;
+        fieldEcu2.text = ec2;
+        fieldEcu3.text = ec3;
 
         float x = 0;
         float y = 0;
@@ -1256,6 +1352,14 @@ public class metodos_numericos : MonoBehaviour {
     private void jacobi() {
         textoNombreMetodo.text = "Jacobi";
         aplicaMetodo = true;
+
+        string ec1 = "x - 3y + 3z = 5";
+        string ec2 = "8x - y - z = 8";
+        string ec3 = "-2x + 4y + z = 4";
+
+        fieldEcu1.text = ec1;
+        fieldEcu2.text = ec2;
+        fieldEcu3.text = ec3;
 
         float x = 1;
         float y = 1;
@@ -1297,8 +1401,41 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Linea recta";
         aplicaMetodo = true;
 
-        float x1 = 1.1f, x2 = 1.9f, x3 = 2.4f, x4 = 4.8f, x5 = 5.1f, x6 = 10.5f;
-        float y1 = 2.5f, y2 = 2.7f, y3 = 3.7f, y4 = 5.2f, y5 = 6.0f, y6 = 8.3f;
+        FieldEcuacion.text = "Sen X";
+
+        
+        float x1 = UnityEngine.Random.Range(1f, 1.8f);
+        float y1 = UnityEngine.Random.Range(2.0f, 2.6f);
+
+        float x2 = 1.9f, x3 = 2.4f, x4 = 4.8f, x5 = 5.1f, x6 = 10.5f;
+        float y2 = 2.7f, y3 = 3.7f, y4 = 5.2f, y5 = 6.0f, y6 = 8.3f;
+
+        fieldXi1.gameObject.SetActive(true);
+        fieldXi2.gameObject.SetActive(true);
+        fieldXi3.gameObject.SetActive(true);
+        fieldXi4.gameObject.SetActive(true);
+        fieldXi5.gameObject.SetActive(true);
+        fieldXi6.gameObject.SetActive(true);
+        fieldYi1.gameObject.SetActive(true);
+        fieldYi2.gameObject.SetActive(true);
+        fieldYi3.gameObject.SetActive(true);
+        fieldYi4.gameObject.SetActive(true);
+        fieldYi5.gameObject.SetActive(true);
+        fieldYi6.gameObject.SetActive(true);
+
+        fieldXi1.text = x1.ToString();
+        fieldXi2.text = x2.ToString();
+        fieldXi3.text = x3.ToString();
+        fieldXi4.text = x4.ToString();
+        fieldXi5.text = x5.ToString();
+        fieldXi6.text = x6.ToString();
+
+        fieldYi1.text = y1.ToString();
+        fieldYi2.text = y2.ToString();
+        fieldYi3.text = y3.ToString();
+        fieldYi4.text = y4.ToString();
+        fieldYi5.text = y5.ToString();
+        fieldYi6.text = y6.ToString();
 
         float n = 6.0f;
 
@@ -1323,6 +1460,95 @@ public class metodos_numericos : MonoBehaviour {
         gx2 = a0 + a1 * x2;
         gx3 = a0 + a1 * x3;
         gx4 = a0 + a1 * x4;
+        gx5 = a0 + a1 * x5;
+        gx6 = a0 + a1 * x6;
+
+        gx1 = (float)Math.Round(gx1, 8);
+        gx2 = (float)Math.Round(gx2, 8);
+        gx3 = (float)Math.Round(gx3, 8);
+        gx4 = (float)Math.Round(gx4, 8);
+        gx5 = (float)Math.Round(gx5, 8);
+        gx6 = (float)Math.Round(gx6, 8);
+
+
+        Debug.Log("gx1: " + gx1);
+        Debug.Log("gx2: " + gx2);
+        Debug.Log("gx3: " + gx3);
+        Debug.Log("gx4: " + gx4);
+        Debug.Log("gx5: " + gx5);
+        Debug.Log("gx6: " + gx6);
+        UIAns.text = "gx1: " + gx1.ToString() + " gx2: " + gx2.ToString() + " gx3: " + gx3.ToString() + " gx4: " + gx4.ToString() + " gx5: " + gx5.ToString() + " gx6: " + gx6.ToString();
+    }
+
+    private void cuadratica() {
+
+        textoNombreMetodo.text = "Cuadrática";
+        aplicaMetodo = true;
+
+        FieldEcuacion.text = "Cos X";
+
+        float x1 = 1.1f, x2 = 1.9f, x3 = 2.4f, x4 = 4.8f;
+        float y1 = 2.5f, y2 = 2.7f, y3 = 3.7f, y4 = 5.2f;
+
+        fieldXi1.text = x1.ToString();
+        fieldXi2.text = x2.ToString();
+        fieldXi3.text = x3.ToString();
+        fieldXi4.text = x4.ToString();
+        fieldXi5.gameObject.SetActive(false);
+        fieldXi6.gameObject.SetActive(false);
+
+        fieldYi1.text = y1.ToString();
+        fieldYi2.text = y2.ToString();
+        fieldYi3.text = y3.ToString();
+        fieldYi4.text = y4.ToString();
+        fieldYi5.gameObject.SetActive(false);
+        fieldYi6.gameObject.SetActive(false);
+
+        fieldGx5.gameObject.SetActive(false);
+        fieldGx6.gameObject.SetActive(false);
+
+        float numero1 = x1;
+        float cubo1 = (float)Math.Pow(numero1, 3f);
+        float numero2 = x2;
+        float cubo2 = (float)Math.Pow(numero2, 3f);
+        float numero3 = x3;
+        float cubo3 = (float)Math.Pow(numero3, 3f);
+        float numero4 = x4;
+        float cubo4 = (float)Math.Pow(numero4, 3f);
+
+        //float n = 4.0f;
+        float x = x1 + x2 + x3 + x4;//25.799999999999997
+        float y = y1 + y2 + y3 + y4;//28.400000000000002
+        float cx = (x1 * x1) + (x2 * x2) + (x3 * x3) + (x4 * x4);//169.88
+        float xy = (x1 * y1) + (x2 * y2) + (x3 * y3) + (x4 * y4);//159.47
+
+        float xcubica = (cubo1) + (cubo2) + (cubo3) + (cubo4);
+        float xcuarta = (x1 * x1 * x1 * x1) + (x2 * x2 * x2 * x2) + (x3 * x3 * x3 * x3) + (x4 * x4 * x4 * x4);
+
+        float cxy = (x1 * x1) * (y1) + (x2 * x2) * (y2) + (x3 * x3) * (y3) + (x4 * x4) * (y4);
+
+        //System.out.println("x: " + x + "\ny: " + y + "\ncx: " + cx + "\nxy: " + xy + "\nxcubica: " + xcubica + "\nxcuarta: " + xcuarta + "\ncxy: " + cxy);
+        /*
+        //
+        double ecuac1 = (n * -4.3) + x;//(6*-4.3)+25.799999999999997=0
+        double ecuac2 = (x * -4.3) + cx;//(25.799999999999997*-4.3)+169.88=58.94
+        double ecuac3 = (y * -4.3) + xy;//(28.4*-4.3)+159.47=37.35
+
+        double a1 = ecuac3 / ecuac2;//a1= 37.35/58.94 = 0.6336952833389886
+        System.out.println("\na1: " + a1);//
+
+        double a0;
+        a0 = (y - x * a1) / n;//a0=2.008443614975683
+        System.out.println("a0: " + a0);
+         */
+        float a0 = 1.462569875f;
+        float a1 = 0.8677754453f;
+        float a2 = -0.01789378435f;
+
+        gx1 = a0 + (a1 * x1) + a2 * (x1 * x1);
+        gx2 = a0 + (a1 * x2) + a2 * (x2 * x2);
+        gx3 = a0 + (a1 * x3) + a2 * (x3 * x3);
+        gx4 = a0 + (a1 * x4) + a2 * (x4 * x4);
 
         gx1 = (float)Math.Round(gx1, 8);
         gx2 = (float)Math.Round(gx2, 8);
@@ -1334,17 +1560,70 @@ public class metodos_numericos : MonoBehaviour {
         Debug.Log("gx2: " + gx2);
         Debug.Log("gx3: " + gx3);
         Debug.Log("gx4: " + gx4);
-        UIAns.text = "gx1: " + gx1.ToString() + " gx2: " + gx2.ToString() + " gx3: " + gx3.ToString() + " gx4: " + gx4.ToString();
-    }
 
-    private void cuadratica() {
-        textoNombreMetodo.text = "Cuadratica";
-        aplicaMetodo = true;
+        UIAns.text = "g(x1): " + gx1.ToString() + "g(x2): " + gx2.ToString() + "g(x3): " + gx3.ToString() + "g(x4): " + gx4.ToString();
     }
 
     private void cubica() {
-        textoNombreMetodo.text = "Cubica";
+
+        textoNombreMetodo.text = "Cúbica";
         aplicaMetodo = true;
+
+        FieldEcuacion.text = "Sen 3x";
+
+        float x1 = 2.4f, x2 = 4.8f, x3 = 5.1f, x4 = 10.5f;
+        float y1 = 3.7f, y2 = 5.2f, y3 = 6, y4 = 8.3f;
+
+        fieldXi1.text = x1.ToString();
+        fieldXi2.text = x2.ToString();
+        fieldXi3.text = x3.ToString();
+        fieldXi4.text = x4.ToString();
+        fieldXi5.gameObject.SetActive(false);
+        fieldXi6.gameObject.SetActive(false);
+
+        fieldYi1.text = y1.ToString();
+        fieldYi2.text = y2.ToString();
+        fieldYi3.text = y3.ToString();
+        fieldYi4.text = y4.ToString();
+        fieldYi5.gameObject.SetActive(false);
+        fieldYi6.gameObject.SetActive(false);
+
+        fieldGx5.gameObject.SetActive(false);
+        fieldGx6.gameObject.SetActive(false);
+
+        float a0 = -0.0054401934f;
+        float a1 = 2.0141915770f;
+        float a2 = -0.2314786737f;
+        float a3 = 0.0109530430f;
+
+        
+        float cubo1 = (float)Math.Pow(x1, 3);
+
+        float cubo2 = (float)Math.Pow(x2, 3);
+
+        float cubo3 = (float)Math.Pow(x3, 3);
+
+        float cubo4 = (float)Math.Pow(x4, 3);
+
+        gx1 = a0 + (a1 * x1) + a2 * (x1 * x1) + a3 * (cubo1);
+        gx2 = a0 + (a1 * x2) + a2 * (x2 * x2) + a3 * (cubo2);
+        gx3 = a0 + (a1 * x3) + a2 * (x3 * x3) + a3 * (cubo3);
+        gx4 = a0 + (a1 * x4) + a2 * (x4 * x4) + a3 * (cubo4);
+
+
+        gx1 = (float)Math.Round(gx1, 8);
+        gx2 = (float)Math.Round(gx2, 8);
+        gx3 = (float)Math.Round(gx3, 8);
+        gx4 = (float)Math.Round(gx4, 8);
+
+
+        Debug.Log("gx1: " + gx1);
+        Debug.Log("gx2: " + gx2);
+        Debug.Log("gx3: " + gx3);
+        Debug.Log("gx4: " + gx4);
+
+        UIAns.text = "g(x1): " + gx1.ToString() + "g(x2): " + gx2.ToString() + "g(x3): " + gx3.ToString() + "g(x4): " + gx4.ToString();
+
     }
 
     private void linealConFuncion() {
@@ -2266,7 +2545,11 @@ public class metodos_numericos : MonoBehaviour {
         rz = (float)Math.Round(rz, 8);
 
         Debug.Log("x: "+r[0]+" y: "+r[1]+" z: "+r[2]);
-        UIAns.text = "x: "+r[0]+" y: "+r[1]+" z: "+r[2];
+        UIAns.text = "x: " + r[0] + " y: " + r[1] + " z: " + r[2];
+
+        if (rx.ToString().Contains("Infinito") || ry.ToString().Contains("Infinito") || rz.ToString().Contains("Infinito")) {
+            aplicaMetodo = false;
+        }
     }
     static private string ToStringSign(double v) {
         if (v < 0) return ' ' + v.ToString(); else return "  " + v.ToString();
