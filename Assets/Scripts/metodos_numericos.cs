@@ -67,7 +67,7 @@ public class metodos_numericos : MonoBehaviour {
 
     float i;
 
-    double yf;
+    double yf, yfPrim;
 
     bool aplicaMetodo;
 
@@ -553,7 +553,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 30); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 17;
+        opcion = 30;
 
         switch (opcion) {
             case 1:
@@ -1677,8 +1677,55 @@ public class metodos_numericos : MonoBehaviour {
     }
 
     private void cuadraticaConFuncion() {
+
         textoNombreMetodo.text = "Cuadrática con función";
         aplicaMetodo = true;
+
+
+        FieldEcuacion.text = "Cos X";
+
+        float x1 = 1.1f, x2 = 1.9f, x3 = 2.4f, x4 = 4.8f;
+        float y1 = 2.5f, y2 = 2.7f, y3 = 3.7f, y4 = 5.2f;
+
+        fieldXi1.text = x1.ToString();
+        fieldXi2.text = x2.ToString();
+        fieldXi3.text = x3.ToString();
+        fieldXi4.text = x4.ToString();
+        fieldXi5.gameObject.SetActive(false);
+        fieldXi6.gameObject.SetActive(false);
+
+        fieldYi1.text = y1.ToString();
+        fieldYi2.text = y2.ToString();
+        fieldYi3.text = y3.ToString();
+        fieldYi4.text = y4.ToString();
+        fieldYi5.gameObject.SetActive(false);
+        fieldYi6.gameObject.SetActive(false);
+
+        fieldGx5.gameObject.SetActive(false);
+        fieldGx6.gameObject.SetActive(false);
+
+        float a0 = 15.0531325982f;
+        float a1 = 0.86776801719f;
+        float a2 = -0.019961217291f;
+        float ab = -13.59055743025f;
+
+        gx1 = (a0) + (a1 * x1) + a2 * (x1 * x1) + ab * (float)Math.Cos(DegreeToRadian(x1));
+        gx2 = (a0) + (a1 * x2) + a2 * (x2 * x2) + ab * (float)Math.Cos(DegreeToRadian(x2));
+        gx3 = (a0) + (a1 * x3) + a2 * (x3 * x3) + ab * (float)Math.Cos(DegreeToRadian(x3));
+        gx4 = (a0) + (a1 * x4) + a2 * (x4 * x4) + ab * (float)Math.Cos(DegreeToRadian(x4));
+
+        gx1 = (float)Math.Round(gx1, 8);
+        gx2 = (float)Math.Round(gx2, 8);
+        gx3 = (float)Math.Round(gx3, 8);
+        gx4 = (float)Math.Round(gx4, 8);
+
+
+        Debug.Log("gx1: " + gx1);
+        Debug.Log("gx2: " + gx2);
+        Debug.Log("gx3: " + gx3);
+        Debug.Log("gx4: " + gx4);
+
+        UIAns.text = "g(x1): " + gx1.ToString() + "g(x2): " + gx2.ToString() + "g(x3): " + gx3.ToString() + "g(x4): " + gx4.ToString();
     }
 
 
@@ -1688,7 +1735,12 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Regla trapezoidal";
         aplicaMetodo = true;
 
-        float a = 2.0f, b = 3.0f, n = 4.0f;
+        //int a = UnityEngine.Random.Range(2, 4);
+        //int b = UnityEngine.Random.Range(4, 6);
+        int n = UnityEngine.Random.Range(4, 10);
+
+        float a = 2.0f, b = 3.0f; //n = 4.0f;
+
         float h = (b - a) / n;
 
         string ecuacion = "1/(1+x^2)dx";
@@ -1716,7 +1768,10 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Regla 1/3 Simpson";
         aplicaMetodo = true;
 
-        float a = 2, b = 3, n = 10, temp = 0, res = 0;
+        float a = 2, b = 3, temp = 0, res = 0;
+
+        int n = UnityEngine.Random.Range(4, 10);
+
         float h = (b - a) / n;
 
         string ecuacion = "1/(1+x^2)dx";
@@ -1725,6 +1780,7 @@ public class metodos_numericos : MonoBehaviour {
         fieldN.text = n.ToString();
 
         float cc = (b - a) / h;
+
         for (int g = 1; g < cc; g++) {
             int v = g % 2;
             if (v == 0) {
@@ -1737,6 +1793,7 @@ public class metodos_numericos : MonoBehaviour {
                 res = res + (4 * temp);
             }
         }
+
         i = (integral3(a) + res + integral3(b));
         i = (h / 3) * (integral3(a) + res + integral3(b));
         i = (float)Math.Round(i, 8);
@@ -1746,10 +1803,13 @@ public class metodos_numericos : MonoBehaviour {
 
     // 3/8 DE SIMPSON
     private void regla38Simpson() {
+
         textoNombreMetodo.text = "Regla 3/8 Simpson";
         aplicaMetodo = true;
 
-        float a = 0, b = 1, n = 3;
+        int n = UnityEngine.Random.Range(3, 10);
+
+        float a = 0, b = 1;
         float h = (b - a) / n;
         float cc = (b - a) / h;
 
@@ -1831,8 +1891,9 @@ public class metodos_numericos : MonoBehaviour {
         float o = (11) * (3 * (cubo4) - 10);
         float p = (0) * (3 * (2 * 2 * 2) - 10);
 
-        double i = (A * h) * (q + z + x + y + u + o + p);
+        i = (A * h) * (q + z + x + y + u + o + p);
         i = (float)Math.Round(i, 8);
+
         Debug.Log("I: " + i);
         UIAns.text = i.ToString();
     }
@@ -1843,10 +1904,12 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Euler hacia adelante";
         aplicaMetodo = true;
 
-        System.Random random = new System.Random();
-        float y0 = random.Next(1, 9), h = random.Next(1, 9), t0 = 0;
-        h = h / 10;
+        double y0 = UnityEngine.Random.Range(1, 6);
+        double h = 0.2;
+        double t0 = 0;
 
+
+        fieldEcuacionP6.text = "3y' - 5yt + 1 = 0";
         fieldY0P6.text = y0.ToString();
         fieldT0P6.text = t0.ToString();
 
@@ -1854,25 +1917,12 @@ public class metodos_numericos : MonoBehaviour {
         fieldY1P6.gameObject.SetActive(false);
         txtY1.SetActive(false);
         txtT1.SetActive(false);
-
         fieldHP6.text = h.ToString();
-        //Console.WriteLine($"y0 = {y0}, h = {h} y t0 = {t0}");
-        ecuacion3();// genera el arreglo de operadores
-        numsRandYT();// genera los numeros aleatorios de la ecuacion
 
-        yf = y0 + (h * ecuacionYT(y0, t0)); //originalmente la variable es y1
-        yf = Math.Round(yf, 8);
-        //double t1 = t0 + h;
-        //double y2 = y1 + (h * ecuacionYT(y1, t1));
-        //Console.WriteLine($"y1 = {y1} y y2 = {y2}");
+        yf = y0 + (h * eulerEjemp(y0, t0));
+        yf = (float)Math.Round(yf, 8);
 
-        // yf es la variable donde se guarda y1
-        // solo calculamos y1
         Debug.Log("Y1: " + yf);
-        if (yf.Equals("Infinito")) {
-            aplicaMetodo = false;
-        }
-        //Debug.Log("Y2: " + y2.ToString("0.0000000"));
         UIAns.text = yf.ToString();
     }
 
@@ -1881,12 +1931,14 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Euler modificado";
         aplicaMetodo = true;
 
-        System.Random random = new System.Random();
-        double t0 = 0, h = random.Next(1, 10), y0 = random.Next(11, 100), y1 = y0, t1 = (t0 + h);
+        double t0 = 0;
+        double h = 0.3;
+        double y0 = UnityEngine.Random.Range(1, 6);
+        //double y0 = 1.2;
+        double y1 = 1.2;
+        double t1 = (t0 + h);
 
-        h = h / 10;
-        y0 = y0 / 10;
-        y1 = y0;
+        fieldEcuacionP6.text = "2y' + 3yt + y = 0";
 
         fieldY0P6.text = y0.ToString();
         fieldT0P6.text = t0.ToString();
@@ -1900,16 +1952,8 @@ public class metodos_numericos : MonoBehaviour {
 
         fieldHP6.text = h.ToString();
 
-        ecuacion1();
-        ecuacion2();
-        numsRandYYT();
-
-        yf = y0 + ((h / 2) * (ecuacionYYT(y0, t0) + ecuacionYYT(y1, t1)));
-        yf = Math.Round(yf, 8);
-
-        if (yf.Equals("Infinito")) {
-            aplicaMetodo = false;
-        }
+        yf = y0 + ((h / 2) * (ejemploError(y0, t0) + ejemploError(y1, t1)));
+        yf = (float)Math.Round(yf, 8);
 
         Debug.Log("yf: "+yf);
         UIAns.text = yf.ToString();
@@ -1919,9 +1963,11 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Runge - Kutta 2° orden";
         aplicaMetodo = true;
 
-        System.Random random = new System.Random();
-        float y0 = random.Next(1, 10), h = random.Next(1, 10), t0 = 0;
-        h = h / 10;
+        double y0 = UnityEngine.Random.Range(1, 6);
+        double h = 0.5;
+        double t0 = 0;
+
+        fieldEcuacionP6.text = "y'e^t - 3y";
 
         fieldY0P6.text = y0.ToString();
         fieldT0P6.text = t0.ToString();
@@ -1932,31 +1978,26 @@ public class metodos_numericos : MonoBehaviour {
         txtY1.SetActive(false);
         txtT1.SetActive(false);
 
-        //Console.WriteLine($"y0 = {y0}, h = {h} y t0 = {t0}");
-        ecuacion3();// genera el arreglo de operadores
-        numsRandYT();// genera los numeros aleatorios de la ecuacion
+        double k1 = h * rungeKutta2daEjem(y0, t0);
+        double k2 = h * rungeKutta2daEjem((y0 + k1), (t0 + h));
 
-        float k1 = h * ecuacionYT(y0, t0);
-        float k2 = h * ecuacionYT((y0 + k1), (t0 + h));
-        yf = y0 + ((k1 + k2) / 2); //yf era originalmente y1
-        yf = Math.Round(yf, 8);
-        //Console.WriteLine($"k1 = {k1}, k2 = {k2} y y1 = {y1}");
+        yf = y0 + ((k1 + k2) / 2);
+        yf = (float)Math.Round(yf, 8);
+
         Debug.Log("yf: " + yf);
-
-        if (yf.Equals("Infinito")) {
-            aplicaMetodo = false;
-        }
         UIAns.text = yf.ToString();
     }
 
     private void RK3Orden() {
+
         textoNombreMetodo.text = "Runge - Kutta 3° orden";
         aplicaMetodo = true;
 
-        System.Random random = new System.Random();
-        double y0 = random.Next(1, 10), h = random.Next(11, 100), t = 0;
-        h = h / 100;
-        //Console.WriteLine($"y0 = {y0}, h = {h} y t = {t}");
+        double y0 = UnityEngine.Random.Range(1, 6);
+        double h = 0.25;
+        double t = 0;
+
+        fieldEcuacionP6.text = "(2yt + 1) / y^2";
 
         fieldY0P6.text = y0.ToString();
         fieldT0P6.text = t.ToString();
@@ -1967,38 +2008,30 @@ public class metodos_numericos : MonoBehaviour {
         txtY1.SetActive(false);
         txtT1.SetActive(false);
 
-        ecuacion1();
-        ecuacion2();
-        numsRandYYT();
+        double k1 = h * tareamier(y0, t);
+        double k2 = h * tareamier((y0 + (k1 / 2)), (t + (h / 2)));
+        double k3 = h * tareamier((y0 - k1 + (2 * k2)), (t + h));
 
-        double k1 = h * ecuacionYYT(y0, t);
-        double k2 = h * ecuacionYYT((y0 + (k1 / 2)), (t + (h / 2)));
-        double k3 = h * ecuacionYYT((y0 - k1 + (2 * k2)), (t + h));
         yf = y0 + ((k1 + (4 * k2) + k3) / 6);
         yf = Math.Round(yf, 8);
 
-        //Console.WriteLine($"k1 = {k1} \nk2 = {k2}\nk3 = {k3}\ny1 = {y1}");
-
-        if (yf.Equals("Infinito")) {
-            aplicaMetodo = false;
-        }
-        UIAns.text = yf.ToString();
         Debug.Log("yf: " + yf);
+        UIAns.text = yf.ToString();
     }
 
     private void RK13Simpson() {
+
         textoNombreMetodo.text = "Runge - Kutta 1/3 Simpson";
         aplicaMetodo = true;
 
-        System.Random random = new System.Random();
-        double y = random.Next(1, 10), h = random.Next(1, 10), t = 0;
-        y = y / 10;
-        h = h / 10;
+        fieldEcuacionP6.text = "((y + t)^2) / (1 - y)";
 
-        //Console.WriteLine($"y = {y}, h = {h} y t = {t}");
+        double y0 = UnityEngine.Random.Range(1, 6);
+        double h = 0.2;
+        double t0 = 0;
 
-        fieldY0P6.text = y.ToString();
-        fieldT0P6.text = t.ToString();
+        fieldY0P6.text = y0.ToString();
+        fieldT0P6.text = t0.ToString();
         fieldHP6.text = h.ToString();
 
         fieldT1P6.gameObject.SetActive(false);
@@ -2006,24 +2039,21 @@ public class metodos_numericos : MonoBehaviour {
         txtY1.SetActive(false);
         txtT1.SetActive(false);
 
-        ecuacion1();
-        ecuacion2();
-        numsRandYYT();
-        double k1 = h * ecuacionYYT(y, t);
-        double k2 = h * ecuacionYYT((y + (k1 / 2)), (t + (h / 2)));
-        double k3 = h * ecuacionYYT((y + (k2 / 2)), (t + (h / 2)));
-        double k4 = h * ecuacionYYT((y + k3), (t + h));
+        double k1 = h * rungeKutta4taEjem(y0, t0);
+        double k2 = h * rungeKutta4taEjem((y0 + (k1 / 2)), (t0 + (h / 2)));
+        double k3 = h * rungeKutta4taEjem((y0 + (k2 / 2)), (t0 + (h / 2)));
+        double k4 = h * rungeKutta4taEjem((y0 + k3), (t0 + h));
 
-        yf = y + ((k1 + (2 * k2) + (2 * k3) + k4) / 6);
+        yf = y0 + ((k1 + (2 * k2) + (2 * k3) + k4) / 6);
         yf = Math.Round(yf, 8);
 
-        //Console.WriteLine($"k1 = {k1} \nk2 = {k2}\nk3 = {k3}\nk4 = {k4}\ny1 = {y1}");
+        Debug.Log("yf: " + yf);
 
-        if (yf.Equals("Infinito")) {
+        if (yf.ToString() == "NaN") {
             aplicaMetodo = false;
         }
+
         UIAns.text = yf.ToString();
-        Debug.Log("yf: " + yf);
     }
 
     private void RK38Simpson() {
@@ -2031,14 +2061,15 @@ public class metodos_numericos : MonoBehaviour {
         textoNombreMetodo.text = "Runge - Kutta 3/8 Simpson";
         aplicaMetodo = true;
 
-        System.Random random = new System.Random();
-        double y = random.Next(1, 10), h = random.Next(1, 10), t = 0;
-        h = h / 10;
+        fieldEcuacionP6.text = "-y / (y^2 + t)";
 
-        //Console.WriteLine($"y = {y}, h = {h} y t = {t}");
+        double y0 = UnityEngine.Random.Range(1, 6);
+        //double y0 = 1;
+        double h = 0.5;
+        double t0 = 0;
 
-        fieldY0P6.text = y.ToString();
-        fieldT0P6.text = t.ToString();
+        fieldY0P6.text = y0.ToString();
+        fieldT0P6.text = t0.ToString();
         fieldHP6.text = h.ToString();
 
         fieldT1P6.gameObject.SetActive(false);
@@ -2046,31 +2077,66 @@ public class metodos_numericos : MonoBehaviour {
         txtY1.SetActive(false);
         txtT1.SetActive(false);
 
-        ecuacion1();
-        ecuacion2();
-        numsRandYYT();
-        double k1 = h * ecuacionYYT(y, t);
-        double k2 = h * ecuacionYYT((y + (k1 / 3)), (t + (h / 3)));
-        double k3 = h * ecuacionYYT((y + (k1 / 3) + (k2 / 3)), (t + ((2 * h) / 3)));
-        double k4 = h * ecuacionYYT((y + k1 - k2 + k3), (t + h));
-
-        yf = y + ((k1 + (3 * k2) + (3 * k3) + k4) / 8);
+        double k1 = h * rungeKutta4ta38Ejem(y0, t0);
+        double k2 = h * rungeKutta4ta38Ejem((y0 + (k1 / 3)), (t0 + (h / 3)));
+        double k3 = h * rungeKutta4ta38Ejem((y0 + (k1 / 3) + (k2 / 3)), (t0 + ((2 * h) / 3)));
+        double k4 = h * rungeKutta4ta38Ejem((y0 + k1 - k2 + k3), (t0 + h));
+        yf = y0 + ((k1 + (3 * k2) + (3 * k3) + k4) / 8);
         yf = Math.Round(yf, 8);
 
-        //Console.WriteLine($"k1 = {k1} \nk2 = {k2}\nk3 = {k3}\nk4 = {k4}\ny1 = {y1}");
-        if (yf.Equals("Infinito") || yf.Equals("NaN")) {
+        Debug.Log("yf: " + yf);
+
+        if (yf.ToString() == "NaN") {
             aplicaMetodo = false;
         }
         UIAns.text = yf.ToString();
-        Debug.Log("yf: " + yf);
     }
 
     private void RKOrdenSuperior() {
+
         textoNombreMetodo.text = "Runge - Kutta Orden Superior";
         aplicaMetodo = true;
+
+        double y0 = UnityEngine.Random.Range(1, 6);
+        //double y0 = 1.1;
+        double yPrim0 = 1.2;
+        double h = 0.2;
+        double t0 = 0;
+
+        fieldEcuacionP6.text = "2y'' -4y't + 2y = 0    y'0 = "+yPrim0;
+
+        fieldY0P6.text = y0.ToString();
+        fieldT0P6.text = t0.ToString();
+        fieldHP6.text = h.ToString();
+
+        fieldT1P6.gameObject.SetActive(false);
+        fieldY1P6.gameObject.SetActive(false);
+        txtY1.SetActive(false);
+        txtT1.SetActive(false);
+
+
+        double k1 = (h * yPrim0);
+        double m1 = h * rungeKuttaOrdSupEjem(y0, yPrim0, t0);
+        double k2 = h * (yPrim0 + m1);
+        double m2 = h * rungeKuttaOrdSupEjem((y0 + k1), (yPrim0 + m1), (t0 + h));
+        yf = y0 + ((k1 + k2) / 2);
+        yfPrim = yPrim0 + ((m1 + m2) / 2);
+
+        Debug.Log("yf: " + yf);
+
+        if (yf.ToString() == "NaN") {
+            aplicaMetodo = false;
+        }
+        UIAns.text = yf.ToString();
     }
 
     //=================================== FIN DE LOS METODOS ===========================//
+
+    float Truncate(float value, int digits){
+        double mult = Math.Pow(10.0, digits);
+        double result = Math.Truncate( mult * value ) / mult;
+        return (float) result;
+    }
 
     static void ecuacion1() {
         System.Random random = new System.Random();
@@ -2603,6 +2669,87 @@ public class metodos_numericos : MonoBehaviour {
 
     private double DegreeToRadian(double angle) {
         return Math.PI * angle / 180.0;
+    }
+
+    ///////Ecuaciones
+    static double eulerEjemp(double y, double t) {
+        double yx = 0.0;
+        yx = ((5*y*t)-1)/3;
+        //yx = (-y * Math.Cos(t)) / (1 - Math.Sin(t));
+
+        return yx;
+    }
+    static double eulerModificadoEjem(double y, double t) {
+        double yx = 0.0;
+        yx = ((-3 * y * t) - y) / 2;
+        return yx;
+    }
+    static double rungeKutta2daEjem(double y, double t) {
+        double yx = 0.0;
+        yx = Math.Pow(Math.E, (-t))-(3*y);
+        //yx = (-y * Math.Cos(t)) / (1 - Math.Sin(t));
+        return yx;
+    }
+    static double rungeKutta3raEjem(double y, double t) {
+        double yx = 0.0;
+        yx = ((2 * y * t) + 1) / (Math.Pow(y, 2));
+        return yx;
+    }
+    static double rungeKutta4taEjem(double y, double t) {
+        double yx = 0.0;
+        yx = (Math.Pow((y + t), 2)) / (1 - y);
+        return yx;
+    }
+
+    static double rungeKutta4ta38Ejem(double y, double t) {
+        double yx = (-y) / ((y*y) + t);
+        return yx;
+    }
+    static double rungeKuttaSimpEjem(double y, double t) {
+        double yx = 0.0;
+        yx = (-y) / ((y * y) + t);
+        return yx;
+    }
+    static double rungeKuttaOrdSupEjem(double y, double yPrim, double t) {
+        double yx = 0.0;
+        yx = (2 * yPrim * t) - y;
+        return yx;
+    }
+    static double ejemploError(double y, double t) {
+        double yx = 0.0;
+        yx = (Math.Pow((((((6 - y) * t) + 1) * 5) + 5), 3)) / (Math.Pow(y, 2));
+        return yx;
+
+    }
+    static double tareamier(double y, double t) {
+        double yx = 0.0;
+        yx = ((2*y*t) + 1) / (y*y);
+        return yx;
+    }
+
+    private void GJ(ref double[,] matrix, int filas, int columnas) {
+        for (int fpivot = 0; fpivot < filas; fpivot++) {
+
+            double nor = matrix[fpivot, fpivot];
+
+            for (int i = 0; i < columnas; i++) {
+                matrix[fpivot, i] = matrix[fpivot, i] / nor;
+            }
+
+            int f = fpivot + 1;
+            if (f == filas) f = 0;
+
+            for (int fila = 0; fila < filas - 1; fila++) {
+                double k = matrix[f, fpivot];
+
+                for (int c = fpivot; c < columnas; c++) {
+                    matrix[f, c] = matrix[f, c] - (k * matrix[fpivot, c]);
+                }
+
+                if (f == filas - 1) f = 0;
+                else f++;
+            }
+        }
     }
 
 }
