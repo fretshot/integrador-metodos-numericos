@@ -551,9 +551,9 @@ public class metodos_numericos : MonoBehaviour {
 
         inicializarDatos();
 
-        //opcion = UnityEngine.Random.Range(1, 30); // No incluye el  5, el rango es de 1 a 4
+        opcion = UnityEngine.Random.Range(1, 31); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 30;
+        //opcion = 30;
 
         switch (opcion) {
             case 1:
