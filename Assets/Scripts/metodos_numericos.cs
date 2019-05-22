@@ -553,7 +553,7 @@ public class metodos_numericos : MonoBehaviour {
 
         //opcion = UnityEngine.Random.Range(1, 30); // No incluye el  5, el rango es de 1 a 4
 
-        opcion = 16;
+        opcion = 17;
 
         switch (opcion) {
             case 1:
@@ -1627,8 +1627,53 @@ public class metodos_numericos : MonoBehaviour {
     }
 
     private void linealConFuncion() {
+
         textoNombreMetodo.text = "Lineal con función";
         aplicaMetodo = true;
+
+        FieldEcuacion.text = "Cos X";
+
+        float x1 = 1.1f, x2 = 1.9f, x3 = 2.4f, x4 = 4.8f;
+        float y1 = 2.5f, y2 = 2.7f, y3 = 3.7f, y4 = 5.2f;
+
+        fieldXi1.text = x1.ToString();
+        fieldXi2.text = x2.ToString();
+        fieldXi3.text = x3.ToString();
+        fieldXi4.text = x4.ToString();
+        fieldXi5.gameObject.SetActive(false);
+        fieldXi6.gameObject.SetActive(false);
+
+        fieldYi1.text = y1.ToString();
+        fieldYi2.text = y2.ToString();
+        fieldYi3.text = y3.ToString();
+        fieldYi4.text = y4.ToString();
+        fieldYi5.gameObject.SetActive(false);
+        fieldYi6.gameObject.SetActive(false);
+
+        fieldGx5.gameObject.SetActive(false);
+        fieldGx6.gameObject.SetActive(false);
+
+        float a0 = -115.1389662f;
+        float a1 = 0.86683406f;
+        float a2 = 116.6026282f;
+
+        gx1 = a0 + (a1 * x1) + a2 * (float)Math.Cos(DegreeToRadian(x1));
+        gx2 = a0 + (a1 * x2) + a2 * (float)Math.Cos(DegreeToRadian(x2));
+        gx3 = a0 + (a1 * x3) + a2 * (float)Math.Cos(DegreeToRadian(x3));
+        gx4 = a0 + (a1 * x4) + a2 * (float)Math.Cos(DegreeToRadian(x4));
+
+        gx1 = (float)Math.Round(gx1, 8);
+        gx2 = (float)Math.Round(gx2, 8);
+        gx3 = (float)Math.Round(gx3, 8);
+        gx4 = (float)Math.Round(gx4, 8);
+
+
+        Debug.Log("gx1: " + gx1);
+        Debug.Log("gx2: " + gx2);
+        Debug.Log("gx3: " + gx3);
+        Debug.Log("gx4: " + gx4);
+
+        UIAns.text = "g(x1): " + gx1.ToString() + "g(x2): " + gx2.ToString() + "g(x3): " + gx3.ToString() + "g(x4): " + gx4.ToString();
     }
 
     private void cuadraticaConFuncion() {
@@ -2556,6 +2601,9 @@ public class metodos_numericos : MonoBehaviour {
     }
     #endregion
 
+    private double DegreeToRadian(double angle) {
+        return Math.PI * angle / 180.0;
+    }
 
 }
 
@@ -2609,3 +2657,5 @@ public class metodos_numericos : MonoBehaviour {
             }
         }
     }
+
+
