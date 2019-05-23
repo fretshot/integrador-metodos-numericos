@@ -12,6 +12,9 @@ public class metodos_numericos : MonoBehaviour {
 
     public Text UIAns;
 
+    public Text text_y1Prim;
+    public Text text_y2Prim;
+
     public TMP_InputField FieldX, fieldX1, fieldX2, fieldX3, fieldX4, fieldY1, fieldY2, fieldY3, fieldY4, fieldGx, fieldGxCPU;
     public TMP_InputField fieldXi, fieldXiCPU, fieldEcuacion;
     public TMP_InputField fieldX, fieldY, fieldZ, fieldXCPU, fieldYCPU, fieldZCPU;
@@ -23,7 +26,8 @@ public class metodos_numericos : MonoBehaviour {
 
     public TMP_InputField fieldEcuacionP5, fieldLimites, fieldN, fieldI, fieldICPU;
 
-    public TMP_InputField fieldEcuacionP6, fieldY0P6, fieldT0P6, fieldHP6, fieldY1P6, fieldT1P6, fieldY1AnsP6, fieldY1AnsCPUP6;
+    public TMP_InputField fieldEcuacionP6, fieldY0P6, fieldT0P6, fieldHP6, fieldY1P6, fieldT1P6, fieldY1AnsP6, fieldY2AnsP6, fieldY1AnsCPUP6, fieldY2AnsCPUP6;
+    public TMP_InputField fieldY1PrimP6, fieldY2PrimP6, fieldY1PrimP6CPU, fieldY2PrimP6CPU;
     public GameObject txtY1, txtT1;
 
     public GameObject p1IconGood;
@@ -52,9 +56,10 @@ public class metodos_numericos : MonoBehaviour {
     public Button btnNoAplicaElMetodo;
 
     float x, x1, x2, x3, x4, y1, y2, y3, y4;
-    float startingTime = 720;
+    float startingTime = 1800;
     float currentTime;
 
+    public bool OrdenSuperior = false;
     float gx;
 
     float gx1, gx2, gx3, gx4,gx5,gx6;
@@ -68,6 +73,8 @@ public class metodos_numericos : MonoBehaviour {
     float i;
 
     double yf, yfPrim;
+
+    double ye1, ye2, yePrim1, yePrim2;
 
     bool aplicaMetodo;
 
@@ -209,12 +216,14 @@ public class metodos_numericos : MonoBehaviour {
 
                 if (aplicaMetodo == false) {
                     fieldY1AnsP6.text = "No aplica el método";
+                    fieldY2AnsP6.text = "No aplica el método";
                     //Respuesta correcta
                     p6IconGood.SetActive(true);
                     Invoke("ganar", 3);
                 } else {
                     //Respuesta incorrecta
                     fieldY1AnsP6.text = "No aplica el método";
+                    fieldY2AnsP6.text = "No aplica el método";
                     p6IconBad.SetActive(true);
                     Invoke("perder", 3);
                 }
@@ -292,8 +301,27 @@ public class metodos_numericos : MonoBehaviour {
 
             if (screenP6.activeSelf) {
 
-                fieldY1AnsCPUP6.gameObject.SetActive(true);
-                fieldY1AnsCPUP6.text = yf.ToString("0.0000000");
+                if (OrdenSuperior == true) {
+                    fieldY1AnsCPUP6.gameObject.SetActive(true);
+                    fieldY1AnsCPUP6.text = "y1 = " + ye1.ToString("0.0000000");
+                    fieldY2AnsCPUP6.gameObject.SetActive(true);
+                    fieldY2AnsCPUP6.text = "y2 = " + ye2.ToString("0.0000000");
+
+                    fieldY1PrimP6CPU.gameObject.SetActive(true);
+                    fieldY1PrimP6CPU.text = "y'1 = " + yePrim1.ToString("0.0000000");
+                    fieldY2PrimP6CPU.gameObject.SetActive(true);
+                    fieldY2PrimP6CPU.text = "y'2 = " + yePrim2.ToString("0.0000000");
+                } else {
+                    fieldY1AnsCPUP6.gameObject.SetActive(true);
+                    fieldY1AnsCPUP6.text = "y1 = " + ye1.ToString("0.0000000");
+                    fieldY2AnsCPUP6.gameObject.SetActive(true);
+                    fieldY2AnsCPUP6.text = "y2 = " + ye2.ToString("0.0000000");
+                }
+
+               
+
+   
+
                 btnVerRespuesta.interactable = false;
                 btnRendirse.interactable = true;
                 btnValidar.interactable = false;
@@ -440,24 +468,49 @@ public class metodos_numericos : MonoBehaviour {
             }
 
             if (screenP6.activeSelf) {
-                
-                if (fieldY1AnsP6.text.Contains(yf.ToString())) {
-                    //Respuesta correcta
-                    p6IconGood.SetActive(true);
-                    btnVerRespuesta.interactable = false;
-                    btnRendirse.interactable = false;
-                    btnValidar.interactable = false;
-                    btnNoAplicaElMetodo.interactable = false;
-                    Invoke("ganar", 3);
+
+
+                if (OrdenSuperior == true) {
+
+                    if (fieldY1AnsP6.text.Contains(ye1.ToString()) && fieldY2AnsP6.text.Contains(ye2.ToString()) || fieldY1PrimP6.text.Contains(yePrim1.ToString()) && fieldY2PrimP6.text.Contains(yePrim2.ToString())) {
+                        //Respuesta correcta
+                        p6IconGood.SetActive(true);
+                        btnVerRespuesta.interactable = false;
+                        btnRendirse.interactable = false;
+                        btnValidar.interactable = false;
+                        btnNoAplicaElMetodo.interactable = false;
+                        Invoke("ganar", 3);
+                    } else {
+                        //Respuesta incorrecta
+                        p6IconBad.SetActive(true);
+                        btnVerRespuesta.interactable = false;
+                        btnRendirse.interactable = false;
+                        btnValidar.interactable = false;
+                        btnNoAplicaElMetodo.interactable = false;
+                        Invoke("perder", 3);
+                    }
+
                 } else {
-                    //Respuesta incorrecta
-                    p6IconBad.SetActive(true);
-                    btnVerRespuesta.interactable = false;
-                    btnRendirse.interactable = false;
-                    btnValidar.interactable = false;
-                    btnNoAplicaElMetodo.interactable = false;
-                    Invoke("perder", 3);
+                    if (fieldY1AnsP6.text.Contains(ye1.ToString()) && fieldY2AnsP6.text.Contains(ye2.ToString())) {
+                        //Respuesta correcta
+                        p6IconGood.SetActive(true);
+                        btnVerRespuesta.interactable = false;
+                        btnRendirse.interactable = false;
+                        btnValidar.interactable = false;
+                        btnNoAplicaElMetodo.interactable = false;
+                        Invoke("ganar", 3);
+                    } else {
+                        //Respuesta incorrecta
+                        p6IconBad.SetActive(true);
+                        btnVerRespuesta.interactable = false;
+                        btnRendirse.interactable = false;
+                        btnValidar.interactable = false;
+                        btnNoAplicaElMetodo.interactable = false;
+                        Invoke("perder", 3);
+                    }
                 }
+                
+               
 
             }
 
@@ -495,10 +548,12 @@ public class metodos_numericos : MonoBehaviour {
         p6IconGood.SetActive(false);
         p6IconBad.SetActive(false);
         fieldY1AnsCPUP6.gameObject.SetActive(false);
+        fieldY2AnsCPUP6.gameObject.SetActive(false);
         fieldEcuacionP6.text = "";
         fieldY0P6.text = "";
         fieldT0P6.text = "";
         fieldY1P6.text = "";
+        fieldY2AnsP6.text = "";
         fieldT1P6.text = "";
         fieldHP6.text = "";
 
@@ -543,6 +598,24 @@ public class metodos_numericos : MonoBehaviour {
 
 
         fieldY1AnsP6.text = "";
+        fieldY2AnsP6.text = "";
+
+        fieldY1PrimP6.text = "";
+        fieldY2PrimP6.text = "";
+        fieldY1PrimP6CPU.text = "";
+        fieldY2PrimP6CPU.text = "";
+
+        text_y1Prim.gameObject.SetActive(false);
+        text_y2Prim.gameObject.SetActive(false);
+        fieldY1PrimP6.gameObject.SetActive(false);
+        fieldY2PrimP6.gameObject.SetActive(false);
+
+        fieldY1PrimP6CPU.gameObject.SetActive(false);
+        fieldY2PrimP6CPU.gameObject.SetActive(false);
+
+        
+
+
 
         UIAns.gameObject.SetActive(false);
         UIAns.text = "";
@@ -553,7 +626,7 @@ public class metodos_numericos : MonoBehaviour {
 
         opcion = UnityEngine.Random.Range(1, 31); // No incluye el  5, el rango es de 1 a 4
 
-        //opcion = 30;
+        //opcion = 25;
 
         switch (opcion) {
             case 1:
@@ -771,7 +844,7 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                EulerHaciaAdelante();
+                laGrange();
                 break;
             case 25:
                 screenP1.SetActive(false);
@@ -780,7 +853,8 @@ public class metodos_numericos : MonoBehaviour {
                 screenP4.SetActive(false);
                 screenP5.SetActive(false);
                 screenP6.SetActive(true);
-                EulerModificado();
+                //EulerModificado();
+                RK2Orden();
                 break;
             case 26:
                 screenP1.SetActive(false);
@@ -834,6 +908,8 @@ public class metodos_numericos : MonoBehaviour {
     void Update(){
         stopwatch();
 
+        /*
+
         if (Input.GetKeyDown(KeyCode.F12)) {
             if (!UIAns.isActiveAndEnabled) {
                 UIAns.gameObject.SetActive(true);
@@ -842,6 +918,8 @@ public class metodos_numericos : MonoBehaviour {
             }
             
         }
+
+        */
 
     }
 
@@ -1901,6 +1979,8 @@ public class metodos_numericos : MonoBehaviour {
     // "EULER HACIA ADELANTE"
     private void EulerHaciaAdelante() {
 
+        OrdenSuperior = false;
+
         textoNombreMetodo.text = "Euler hacia adelante";
         aplicaMetodo = true;
 
@@ -1927,6 +2007,8 @@ public class metodos_numericos : MonoBehaviour {
     }
 
     private void EulerModificado() {
+
+        OrdenSuperior = false;
 
         textoNombreMetodo.text = "Euler modificado";
         aplicaMetodo = true;
@@ -1960,12 +2042,13 @@ public class metodos_numericos : MonoBehaviour {
     }
 
     private void RK2Orden() {
+
+        OrdenSuperior = false;
+
         textoNombreMetodo.text = "Runge - Kutta 2° orden";
         aplicaMetodo = true;
 
-        double y0 = UnityEngine.Random.Range(1, 6);
-        double h = 0.5;
-        double t0 = 0;
+        double y0 = 1, h = 0.5, t0 = 0;
 
         fieldEcuacionP6.text = "y'e^t - 3y";
 
@@ -1978,29 +2061,42 @@ public class metodos_numericos : MonoBehaviour {
         txtY1.SetActive(false);
         txtT1.SetActive(false);
 
+
+
         double k1 = h * rungeKutta2daEjem(y0, t0);
         double k2 = h * rungeKutta2daEjem((y0 + k1), (t0 + h));
+        ye1 = y0 + ((k1 + k2) / 2);
 
-        yf = y0 + ((k1 + k2) / 2);
-        yf = (float)Math.Round(yf, 8);
+        double t1 = t0 + h;
 
-        Debug.Log("yf: " + yf);
-        UIAns.text = yf.ToString();
+        k1 = h * rungeKutta2daEjem(y1, t1);
+        k2 = h * rungeKutta2daEjem((y1 + k1), (t1 + h));
+        ye2 = y1 + ((k1 + k2) / 2);
+
+        ye1 = Math.Round(ye1, 8);
+        ye2 = Math.Round(ye2, 8);
+
+        Debug.Log("y1: " + ye1 +" y2 = "+ye2 );
+        UIAns.text = y1.ToString();
+
+
     }
 
     private void RK3Orden() {
+
+        OrdenSuperior = false;
 
         textoNombreMetodo.text = "Runge - Kutta 3° orden";
         aplicaMetodo = true;
 
         double y0 = UnityEngine.Random.Range(1, 6);
         double h = 0.25;
-        double t = 0;
+        double t0 = 0;
 
         fieldEcuacionP6.text = "(2yt + 1) / y^2";
 
         fieldY0P6.text = y0.ToString();
-        fieldT0P6.text = t.ToString();
+        fieldT0P6.text = t0.ToString();
         fieldHP6.text = h.ToString();
 
         fieldT1P6.gameObject.SetActive(false);
@@ -2008,25 +2104,36 @@ public class metodos_numericos : MonoBehaviour {
         txtY1.SetActive(false);
         txtT1.SetActive(false);
 
-        double k1 = h * tareamier(y0, t);
-        double k2 = h * tareamier((y0 + (k1 / 2)), (t + (h / 2)));
-        double k3 = h * tareamier((y0 - k1 + (2 * k2)), (t + h));
+        double k1 = h * tareamier(y0, t0);
+        double k2 = h * tareamier((y0 + (k1 / 2)), (t0 + (h / 2)));
+        double k3 = h * tareamier((y0 - k1 + (2 * k2)), (t0 + h));
 
-        yf = y0 + ((k1 + (4 * k2) + k3) / 6);
-        yf = Math.Round(yf, 8);
+        ye1 = y0 + ((k1 + (4 * k2) + k3) / 6);
 
-        Debug.Log("yf: " + yf);
-        UIAns.text = yf.ToString();
+        double t1 = t0 + h;
+
+        k1 = h * tareamier(ye1, t1);
+        k2 = h * tareamier((ye1 + (k1 / 2)), (t1 + (h / 2)));
+        k3 = h * tareamier((ye1 - k1 + (2 * k2)), (t1 + h));
+        ye2 = y0 + ((k1 + (4 * k2) + k3) / 6);
+
+        ye1 = Math.Round(ye1, 8);
+        ye2 = Math.Round(ye2, 8);
+
+        Debug.Log("y1: " + ye1 + " y2 = " + ye2);
+        UIAns.text = y1.ToString();
     }
 
     private void RK13Simpson() {
+
+        OrdenSuperior = false;
 
         textoNombreMetodo.text = "Runge - Kutta 1/3 Simpson";
         aplicaMetodo = true;
 
         fieldEcuacionP6.text = "((y + t)^2) / (1 - y)";
 
-        double y0 = UnityEngine.Random.Range(1, 6);
+        double y0 = 0.4; //UnityEngine.Random.Range(1, 6);
         double h = 0.2;
         double t0 = 0;
 
@@ -2044,27 +2151,40 @@ public class metodos_numericos : MonoBehaviour {
         double k3 = h * rungeKutta4taEjem((y0 + (k2 / 2)), (t0 + (h / 2)));
         double k4 = h * rungeKutta4taEjem((y0 + k3), (t0 + h));
 
-        yf = y0 + ((k1 + (2 * k2) + (2 * k3) + k4) / 6);
-        yf = Math.Round(yf, 8);
+        ye1 = y0 + ((k1 + (2 * k2) + (2 * k3) + k4) / 6);
 
-        Debug.Log("yf: " + yf);
+        double t1 = t0 + h;
 
-        if (yf.ToString() == "NaN") {
+        k1 = h * rungeKutta4taEjem(ye1, t1);
+        k2 = h * rungeKutta4taEjem((ye1 + (k1 / 2)), (t1 + (h / 2)));
+        k3 = h * rungeKutta4taEjem((ye1 + (k2 / 2)), (t1 + (h / 2)));
+        k4 = h * rungeKutta4taEjem((ye1 + k3), (t1 + h));
+
+        ye2 = ye1 + ((k1 + (2 * k2) + (2 * k3) + k4) / 6);
+
+        ye1 = Math.Round(ye1, 8);
+        ye2 = Math.Round(ye2, 8);
+
+        Debug.Log("y1: " + ye1 + " y2 = " + ye2);
+        UIAns.text = y1.ToString();
+
+        if (ye1.ToString() == "NaN" || ye2.ToString() == "NaN") {
             aplicaMetodo = false;
         }
 
-        UIAns.text = yf.ToString();
     }
 
     private void RK38Simpson() {
+
+        OrdenSuperior = false;
 
         textoNombreMetodo.text = "Runge - Kutta 3/8 Simpson";
         aplicaMetodo = true;
 
         fieldEcuacionP6.text = "-y / (y^2 + t)";
 
-        double y0 = UnityEngine.Random.Range(1, 6);
-        //double y0 = 1;
+        //double y0 = UnityEngine.Random.Range(1, 6);
+        double y0 = 1;
         double h = 0.5;
         double t0 = 0;
 
@@ -2081,24 +2201,38 @@ public class metodos_numericos : MonoBehaviour {
         double k2 = h * rungeKutta4ta38Ejem((y0 + (k1 / 3)), (t0 + (h / 3)));
         double k3 = h * rungeKutta4ta38Ejem((y0 + (k1 / 3) + (k2 / 3)), (t0 + ((2 * h) / 3)));
         double k4 = h * rungeKutta4ta38Ejem((y0 + k1 - k2 + k3), (t0 + h));
-        yf = y0 + ((k1 + (3 * k2) + (3 * k3) + k4) / 8);
-        yf = Math.Round(yf, 8);
+        ye1 = y0 + ((k1 + (3 * k2) + (3 * k3) + k4) / 8);
 
-        Debug.Log("yf: " + yf);
+        double t1 = t0 + h;
 
-        if (yf.ToString() == "NaN") {
+        k1 = h * rungeKutta4ta38Ejem(ye1, t1);
+        k2 = h * rungeKutta4ta38Ejem((ye1 + (k1 / 3)), (t1 + (h / 3)));
+        k3 = h * rungeKutta4ta38Ejem((ye1 + (k1 / 3) + (k2 / 3)), (t1 + ((2 * h) / 3)));
+        k4 = h * rungeKutta4ta38Ejem((ye1 + k1 - k2 + k3), (t1 + h));
+        ye2 = ye1 + ((k1 + (3 * k2) + (3 * k3) + k4) / 8);
+
+
+        ye1 = Math.Round(ye1, 8);
+        ye2 = Math.Round(ye2, 8);
+
+        Debug.Log("y1: " + ye1 + " y2 = " + ye2);
+        UIAns.text = y1.ToString();
+
+        if (ye1.ToString() == "NaN" || ye2.ToString() == "NaN") {
             aplicaMetodo = false;
         }
-        UIAns.text = yf.ToString();
+
     }
 
     private void RKOrdenSuperior() {
 
+        OrdenSuperior = true;
+
         textoNombreMetodo.text = "Runge - Kutta Orden Superior";
         aplicaMetodo = true;
 
-        double y0 = UnityEngine.Random.Range(1, 6);
-        //double y0 = 1.1;
+        //double y0 = UnityEngine.Random.Range(1, 6);
+        double y0 = 1.1;
         double yPrim0 = 1.2;
         double h = 0.2;
         double t0 = 0;
@@ -2114,20 +2248,42 @@ public class metodos_numericos : MonoBehaviour {
         txtY1.SetActive(false);
         txtT1.SetActive(false);
 
+        text_y1Prim.gameObject.SetActive(true);
+        text_y2Prim.gameObject.SetActive(true);
+        fieldY1PrimP6.gameObject.SetActive(true);
+        fieldY2PrimP6.gameObject.SetActive(true);
+
 
         double k1 = (h * yPrim0);
         double m1 = h * rungeKuttaOrdSupEjem(y0, yPrim0, t0);
         double k2 = h * (yPrim0 + m1);
         double m2 = h * rungeKuttaOrdSupEjem((y0 + k1), (yPrim0 + m1), (t0 + h));
-        yf = y0 + ((k1 + k2) / 2);
-        yfPrim = yPrim0 + ((m1 + m2) / 2);
+        ye1 = y0 + ((k1 + k2) / 2);
+        yePrim1 = yPrim0 + ((m1 + m2) / 2);
 
-        Debug.Log("yf: " + yf);
+        double t1 = t0 + h;
 
-        if (yf.ToString() == "NaN") {
+
+        k1 = (h * yePrim1);
+        m1 = h * rungeKuttaOrdSupEjem(ye1, yePrim1, t1);
+        k2 = h * (yPrim0 + m1);
+        m2 = h * rungeKuttaOrdSupEjem((ye1 + k1), (yePrim1 + m1), (t1 + h));
+        ye2 = ye1 + ((k1 + k2) / 2);
+        yePrim2 = yePrim1 + ((m1 + m2) / 2);
+
+        ye1 = Math.Round(ye1, 8);
+        ye2 = Math.Round(ye2, 8);
+
+        yePrim1 = Math.Round(yePrim1, 8);
+        yePrim2 = Math.Round(yePrim2, 8);
+
+        Debug.Log("y1: " + ye1 + " y2 = " + ye2+ " y'1: " + yePrim1 + " y'2 = " + yePrim2);
+        UIAns.text = y1.ToString();
+
+        if (ye1.ToString() == "NaN" || ye2.ToString() == "NaN" || yePrim1.ToString() == "NaN" || yePrim2.ToString() == "NaN") {
             aplicaMetodo = false;
         }
-        UIAns.text = yf.ToString();
+
     }
 
     //=================================== FIN DE LOS METODOS ===========================//
